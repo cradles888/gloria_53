@@ -64,7 +64,7 @@ const ApartmentHeroGallery = ({ images = [], apartmentTitle = "" }) => {
                                 "--swiper-navigation-color": "#E85D1F",
                                 "--swiper-pagination-color": "#E85D1F",
                                 "--swiper-navigation-size": "30px",
-                                "--swiper-navigation-sides-offset": "8px",
+                                "--swiper-navigation-sides-offset": "-5px",
                             }}
                         >
                             {galleryImages.map((image, index) => (
@@ -80,7 +80,7 @@ const ApartmentHeroGallery = ({ images = [], apartmentTitle = "" }) => {
                                             alt={image.alt || image.caption || apartmentTitle}
                                             loading={index === 0 ? "eager" : "lazy"}
                                             decoding="async"
-                                            className="max-h-[500px] w-full max-w-[560px] object-contain px-10 pb-12 pt-4 mix-blend-multiply sm:px-14"
+                                            className="max-h-[500px] w-full max-w-[560px] object-contain px-7 pb-12 pt-4 mix-blend-multiply sm:px-14"
                                         />
                                     </button>
                                 </SwiperSlide>
