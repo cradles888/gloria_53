@@ -1,8 +1,23 @@
-import { Syne } from "next/font/google";
+import localFont from "next/font/local";
 
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+const syne = localFont({
+  src: [
+    {
+      path: "../fonts/Syne/Syne-Regular.ttf",
+      weight: "400",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Syne/Syne-Medium.ttf",
+      weight: "500",
+      style: "normal",
+    },
+    {
+      path: "../fonts/Syne/Syne-Bold.ttf",
+      weight: "700",
+      style: "normal",
+    },
+  ],
   variable: "--font-syne",
   display: "swap",
 });

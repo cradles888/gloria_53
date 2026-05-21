@@ -29,7 +29,7 @@ const Filter = ({
   onFiltersChange,
   onReset,
   matchingCount = null,
-}) => {
+} = {}) => {
   const router = useRouter();
   const isControlled = Boolean(onFiltersChange);
 
