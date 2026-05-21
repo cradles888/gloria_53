@@ -138,7 +138,7 @@ export default async function ApartmentPage({ params, searchParams }) {
   return (
     <main className="container-padding">
       <section className="section">
-        <div className="grid min-w-0 gap-6 rounded-4xl bg-dark10 p-3 sm:p-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch">
+        <div className="grid min-w-0 gap-6 rounded-4xl bg-dark10 p-3  sm:p-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-stretch">
           <ApartmentHeroGallery
             images={apartment.images}
             apartmentTitle={apartmentTitle}
