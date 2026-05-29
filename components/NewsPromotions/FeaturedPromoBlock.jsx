@@ -8,8 +8,8 @@ const FeaturedPromoBlock = ({ item }) => {
   const href = item.slug ? `/news/${item.slug}` : "#";
 
   return (
-    <section className="group grid h-full overflow-hidden rounded-3xl  bg-[#EFEEE9] lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
-      <div className="flex h-full flex-col justify-between p-5 text-dark sm:p-6 lg:p-7">
+    <section className="group grid overflow-hidden rounded-3xl bg-[#EFEEE9] lg:h-full lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="order-2 flex flex-col justify-between p-5 text-dark sm:p-6 lg:order-1 lg:h-full lg:p-7">
         <div>
           <div className="mb-5 flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-accent px-3.5 py-1.5 text-xs font-medium text-white">
@@ -51,14 +51,14 @@ const FeaturedPromoBlock = ({ item }) => {
         </div>
       </div>
 
-      <div className="relative min-h-[170px] overflow-hidden lg:h-full">
+      <div className="order-1 relative h-48 overflow-hidden sm:h-56 lg:order-2 lg:h-full">
         <img
           src={item.image}
           alt={item.title}
           className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-dark/45 via-transparent to-transparent lg:bg-gradient-to-r lg:from-white/10 lg:via-transparent lg:to-dark/25" />
+        <div className="absolute inset-0 bg-linear-to-t from-dark/45 via-transparent to-transparent lg:bg-linear-to-r lg:from-white/10 lg:via-transparent lg:to-dark/25" />
       </div>
     </section>
   );
