@@ -18,7 +18,32 @@ const FormSection = ({ title, children }) => (
   </section>
 );
 
-const EditApartmentForm = ({ apartment, buildings }) => {
+const AmenityCheckboxes = ({ amenities = [], selectedIds = [] }) => {
+  if (!amenities.length) return null;
+  return (
+    <FormSection title="Удобства">
+      <div className="flex flex-wrap gap-3">
+        {amenities.map((a) => (
+          <label
+            key={a.id}
+            className="flex cursor-pointer items-center gap-2 rounded-4xl border border-dark15 bg-white px-4 py-2.5 text-sm text-dark transition hover:border-accent has-checked:border-accent has-checked:bg-accent/10"
+          >
+            <input
+              type="checkbox"
+              name="amenities"
+              value={a.id}
+              defaultChecked={selectedIds.includes(a.id)}
+              className="h-4 w-4 accent-accent"
+            />
+            {a.name}
+          </label>
+        ))}
+      </div>
+    </FormSection>
+  );
+};
+
+const EditApartmentForm = ({ apartment, buildings, amenities = [], selectedAmenityIds = [] }) => {
   const [mainImage, setMainImage] = useState(apartment.mainImage ?? "");
   const [planImage, setPlanImage] = useState(apartment.planImage ?? "");
 
@@ -133,6 +158,8 @@ const EditApartmentForm = ({ apartment, buildings }) => {
           />
         </div>
       </FormSection>
+
+      <AmenityCheckboxes amenities={amenities} selectedIds={selectedAmenityIds} />
 
       <div className="flex flex-wrap items-center gap-3">
         <Button type="submit" variant="dark">Сохранить изменения</Button>

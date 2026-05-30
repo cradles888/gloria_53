@@ -137,28 +137,28 @@ const FloorPlanView = ({ apartments = [], filteredIds = new Set() }) => {
                 );
               })}
           </div>
-
-          {/* Легенда */}
-          <div className="mt-4 flex flex-wrap gap-4 text-xs text-dark50">
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block h-3 w-5 rounded-sm bg-accent" />
-              В продаже
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block h-3 w-5 rounded-sm bg-accent/20" />
-              Не в фильтре
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block h-3 w-5 rounded-sm bg-dark10" />
-              Забронирована
-            </span>
-            <span className="flex items-center gap-1.5">
-              <span className="inline-block h-3 w-5 rounded-sm bg-dark5" />
-              Продана
-            </span>
-          </div>
         </div>
       ))}
+
+      {/* Легенда — один раз внизу */}
+      <div className="flex flex-wrap gap-4 text-xs text-dark50">
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block h-3 w-5 rounded-sm bg-accent" />
+          В продаже
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block h-3 w-5 rounded-sm bg-accent/20" />
+          Не в фильтре
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block h-3 w-5 rounded-sm bg-dark10" />
+          Забронирована
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="inline-block h-3 w-5 rounded-sm bg-dark5" />
+          Продана
+        </span>
+      </div>
     </div>
   );
 };

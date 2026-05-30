@@ -28,6 +28,9 @@ const parseContent = (value) => {
     .filter(Boolean);
 };
 
+const parseAmenityIds = (formData) =>
+  formData.getAll("amenities").map(Number).filter(Boolean);
+
 const getNewsDataFromForm = (formData) => ({
   title: String(formData.get("title") || "").trim(),
   slug: String(formData.get("slug") || "").trim(),
@@ -149,6 +152,7 @@ export const updateApartment = async (formData) => {
   const ceilingHeightRaw = String(formData.get("ceilingHeight") || "").trim();
   const mainImage = String(formData.get("mainImage") || "").trim();
   const planImage = String(formData.get("planImage") || "").trim();
+  const amenityIds = parseAmenityIds(formData);
 
   await prisma.apartment.update({
     where: { id },
@@ -166,6 +170,10 @@ export const updateApartment = async (formData) => {
       article: String(formData.get("article") || "").trim() || null,
       mainImage: mainImage || null,
       planImage: planImage || null,
+      amenities: {
+        deleteMany: {},
+        create: amenityIds.map((amenityId) => ({ amenityId })),
+      },
     },
   });
 
@@ -373,6 +381,7 @@ export const createApartment = async (formData) => {
 
   const entranceRaw = String(formData.get("entrance") || "").trim();
   const ceilingHeightRaw = String(formData.get("ceilingHeight") || "").trim();
+  const amenityIds = parseAmenityIds(formData);
 
   await prisma.apartment.create({
     data: {
@@ -389,6 +398,9 @@ export const createApartment = async (formData) => {
       layoutType: "Квартира",
       mainImage,
       planImage,
+      amenities: {
+        create: amenityIds.map((amenityId) => ({ amenityId })),
+      },
     },
   });
 

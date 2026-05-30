@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import ApartmentHeroGallery from "@/components/Apartments/ApartmentHeroGallery";
 import ApartmentInfoPanel from "@/components/Apartments/ApartmentInfoPanel";
+import SimilarApartments from "@/components/Apartments/SimilarApartments";
 
 export const dynamic = "force-dynamic";
 
@@ -97,6 +98,7 @@ const serializeApartment = (apartment) => {
     complexName: apartment.building.complex.name,
     complexAddress: apartment.building.complex.address,
     buildingAddress: apartment.building.address,
+    complexId: apartment.building.complexId,
 
     amenityItems: apartment.amenities.map((item) => ({
       id: item.amenity.id,
@@ -156,6 +158,60 @@ const getApartment = async (id) => {
   return serializeApartment(apartment);
 };
 
+const toCardShape = (apt) => {
+  const sorted = [...apt.images].sort((a, b) => a.sortOrder - b.sortOrder);
+  return {
+    id: apt.id,
+    number: apt.number,
+    rooms: apt.rooms,
+    areaTotal: apt.areaTotal.toString(),
+    price: apt.price,
+    pricePerSqm: apt.pricePerSqm,
+    mainImage: apt.mainImage || sorted[0]?.url || "",
+    imageAlt: `Планировка квартиры №${apt.number}`,
+    buildingPosition: apt.building.position || "",
+    floor: apt.floor,
+    floorsTotal: apt.building.floorsTotal,
+    amenityItems: apt.amenities.map((i) => ({
+      id: i.amenity.id,
+      name: i.amenity.name,
+      slug: i.amenity.slug,
+      icon: i.amenity.icon,
+    })),
+  };
+};
+
+// Похожие: тот же ЖК + те же комнаты (сортировка по близости площади),
+// добираем до 5 другими квартирами того же ЖК
+const getSimilarApartments = async (current) => {
+  const pool = await prisma.apartment.findMany({
+    where: {
+      status: "available",
+      id: { not: current.id },
+      building: { complexId: current.complexId },
+    },
+    include: {
+      building: { include: { complex: true } },
+      images: { orderBy: { sortOrder: "asc" } },
+      amenities: { include: { amenity: true } },
+    },
+  });
+
+  const area = parseFloat(current.areaTotal);
+  const byAreaCloseness = (a, b) =>
+    Math.abs(parseFloat(a.areaTotal) - area) -
+    Math.abs(parseFloat(b.areaTotal) - area);
+
+  const sameRooms = pool
+    .filter((a) => a.rooms === current.rooms)
+    .sort(byAreaCloseness);
+  const others = pool
+    .filter((a) => a.rooms !== current.rooms)
+    .sort(byAreaCloseness);
+
+  return [...sameRooms, ...others].slice(0, 5).map(toCardShape);
+};
+
 export default async function ApartmentPage({ params, searchParams }) {
   const { id } = await params;
   const { success } = await searchParams;
@@ -165,6 +221,8 @@ export default async function ApartmentPage({ params, searchParams }) {
   if (!apartment) {
     notFound();
   }
+
+  const similar = await getSimilarApartments(apartment);
 
   const apartmentTitle = `${apartment.rooms}-комнатная квартира, ${apartment.areaTotal} м²`;
 
@@ -179,6 +237,8 @@ export default async function ApartmentPage({ params, searchParams }) {
 
           <ApartmentInfoPanel  apartment={apartment} showSuccess={success === "1"} />
         </div>
+
+        <SimilarApartments items={similar} />
       </section>
     </main>
   );

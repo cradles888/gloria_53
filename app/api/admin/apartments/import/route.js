@@ -49,9 +49,10 @@ export async function POST(request) {
     return NextResponse.json({ error: "Таблица пустая" }, { status: 400 });
   }
 
-  const buildings = await prisma.building.findMany({
-    include: { complex: true },
-  });
+  const [buildings, amenities] = await Promise.all([
+    prisma.building.findMany({ include: { complex: true } }),
+    prisma.amenity.findMany(),
+  ]);
 
   const findBuilding = (position, complexName) => {
     if (!position) return null;
@@ -64,6 +65,21 @@ export async function POST(request) {
       if (cx) return b.complex.name.toLowerCase() === cx;
       return true;
     }) ?? null;
+  };
+
+  // Поиск удобств по названию или slug (через запятую в ячейке)
+  const amenityByKey = new Map();
+  for (const a of amenities) {
+    amenityByKey.set(a.name.toLowerCase(), a.id);
+    amenityByKey.set(a.slug.toLowerCase(), a.id);
+  }
+
+  const parseAmenityIds = (cell) => {
+    const ids = String(cell || "")
+      .split(",")
+      .map((s) => amenityByKey.get(s.trim().toLowerCase()))
+      .filter((id) => id !== undefined);
+    return [...new Set(ids)];
   };
 
   const created = [];
@@ -101,6 +117,7 @@ export async function POST(request) {
     const status = STATUS_MAP[statusRaw] ?? "available";
     const mainImage = String(row["Главное фото"] || "").trim() || null;
     const planImage = String(row["План этажа"] || "").trim() || null;
+    const amenityIds = parseAmenityIds(row["Удобства"]);
 
     try {
       const apartment = await prisma.apartment.create({
@@ -119,6 +136,9 @@ export async function POST(request) {
           status,
           mainImage,
           planImage,
+          amenities: {
+            create: amenityIds.map((amenityId) => ({ amenityId })),
+          },
         },
       });
       created.push({ row: rowNum, number: apartment.number, id: apartment.id });

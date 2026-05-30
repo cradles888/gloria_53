@@ -20,20 +20,29 @@ export default async function EditApartmentPage({ params }) {
   const { id } = await params;
   const apartment = await prisma.apartment.findUnique({
     where: { id: Number(id) },
-    include: { building: { include: { complex: true } } },
+    include: {
+      building: { include: { complex: true } },
+      amenities: { select: { amenityId: true } },
+    },
   });
 
   if (!apartment) notFound();
 
-  const buildings = await prisma.building.findMany({
-    include: { complex: true },
-    orderBy: { id: "asc" },
-  });
+  const [buildings, amenities] = await Promise.all([
+    prisma.building.findMany({
+      include: { complex: true },
+      orderBy: { id: "asc" },
+    }),
+    prisma.amenity.findMany({ orderBy: { id: "asc" } }),
+  ]);
+
+  const selectedAmenityIds = apartment.amenities.map((a) => a.amenityId);
 
   const serialized = {
     ...apartment,
     areaTotal: apartment.areaTotal?.toString() ?? "",
     ceilingHeight: apartment.ceilingHeight?.toString() ?? "",
+    amenities: undefined,
     createdAt: undefined,
     updatedAt: undefined,
   };
@@ -52,7 +61,12 @@ export default async function EditApartmentPage({ params }) {
           </Button>
         </div>
 
-        <EditApartmentForm apartment={serialized} buildings={buildings} />
+        <EditApartmentForm
+          apartment={serialized}
+          buildings={buildings}
+          amenities={amenities}
+          selectedAmenityIds={selectedAmenityIds}
+        />
 
         <div className="mt-10 border-t border-dark15 pt-8">
           <p className="text-sm text-dark50">Удаление квартиры необратимо.</p>

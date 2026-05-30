@@ -16,10 +16,13 @@ export default async function NewApartmentPage({ searchParams }) {
 
   const { error } = await searchParams;
 
-  const buildings = await prisma.building.findMany({
-    include: { complex: true },
-    orderBy: { id: "asc" },
-  });
+  const [buildings, amenities] = await Promise.all([
+    prisma.building.findMany({
+      include: { complex: true },
+      orderBy: { id: "asc" },
+    }),
+    prisma.amenity.findMany({ orderBy: { id: "asc" } }),
+  ]);
 
   return (
     <main className="container-padding">
@@ -39,7 +42,7 @@ export default async function NewApartmentPage({ searchParams }) {
           </p>
         )}
 
-        <NewApartmentForm buildings={buildings} />
+        <NewApartmentForm buildings={buildings} amenities={amenities} />
       </section>
     </main>
   );

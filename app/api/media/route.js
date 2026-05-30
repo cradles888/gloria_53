@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/adminAuth";
-import { supabase, BUCKET, getPublicUrl } from "@/lib/supabase";
+import { getSupabase, BUCKET, getPublicUrl } from "@/lib/supabase";
 
 const ALLOWED_FOLDERS = ["apartments", "buildings", "news", "built-objects", "misc"];
 
@@ -18,7 +18,7 @@ export async function GET(request) {
     return NextResponse.json({ error: "Invalid folder" }, { status: 400 });
   }
 
-  const { data, error } = await supabase.storage
+  const { data, error } = await getSupabase().storage
     .from(BUCKET)
     .list(folder, {
       limit: 200,

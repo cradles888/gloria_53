@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/adminAuth";
-import { supabase, BUCKET } from "@/lib/supabase";
+import { getSupabase, BUCKET } from "@/lib/supabase";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
@@ -35,7 +35,7 @@ export async function POST(request) {
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
-  const { error } = await supabase.storage
+  const { error } = await getSupabase().storage
     .from(BUCKET)
     .upload(path, buffer, {
       contentType: file.type,
@@ -47,7 +47,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Ошибка загрузки файла" }, { status: 500 });
   }
 
-  const { data } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  const { data } = getSupabase().storage.from(BUCKET).getPublicUrl(path);
 
   return NextResponse.json({ url: data.publicUrl, path });
 }
@@ -66,7 +66,7 @@ export async function DELETE(request) {
     return NextResponse.json({ error: "Path required" }, { status: 400 });
   }
 
-  const { error } = await supabase.storage.from(BUCKET).remove([path]);
+  const { error } = await getSupabase().storage.from(BUCKET).remove([path]);
 
   if (error) {
     console.error("Supabase delete error:", error);
