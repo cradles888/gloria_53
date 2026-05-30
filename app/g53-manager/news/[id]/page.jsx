@@ -2,7 +2,6 @@ import { notFound } from "next/navigation";
 
 import { prisma } from "@/lib/prisma";
 import Button from "@/components/UI/Button";
-import AdminEyebrow from "../../_components/AdminEyebrow";
 import { requireAdmin } from "@/lib/adminAuth";
 import { deleteNewsItem, updateNewsItem } from "../../actions";
 import AdminNav from "../../_components/AdminNav";
@@ -31,8 +30,7 @@ export default async function ManagerNewsEditPage({ params }) {
         <section className="mt-10 rounded-4xl bg-dark10 p-5 sm:p-6 lg:p-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <AdminEyebrow>Редактирование</AdminEyebrow>
-              <h2 className="mt-2 text-2xl font-medium text-dark">
+              <h2 className="text-2xl font-medium text-dark">
                 {item.title}
               </h2>
             </div>

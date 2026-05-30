@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { X, Maximize2 } from "lucide-react";
 
@@ -72,16 +73,19 @@ const ApartmentHeroGallery = ({ images = [], apartmentTitle = "" }) => {
                                     <button
                                         type="button"
                                         onClick={() => openGallery(index)}
-                                        className="grid h-full w-full place-items-center"
+                                        className="relative grid h-full max-h-125 w-full max-w-140 place-items-center px-7 pb-12 pt-4 sm:px-14"
                                         aria-label={`Открыть изображение: ${image.caption}`}
                                     >
-                                        <img
-                                            src={image.src}
-                                            alt={image.alt || image.caption || apartmentTitle}
-                                            loading={index === 0 ? "eager" : "lazy"}
-                                            decoding="async"
-                                            className="max-h-[500px] w-full max-w-[560px] object-contain px-7 pb-12 pt-4 mix-blend-multiply sm:px-14"
-                                        />
+                                        <span className="relative block h-full w-full">
+                                            <Image
+                                                src={image.src}
+                                                alt={image.alt || image.caption || apartmentTitle}
+                                                fill
+                                                priority={index === 0}
+                                                sizes="(max-width: 640px) 90vw, 560px"
+                                                className="object-contain mix-blend-multiply"
+                                            />
+                                        </span>
                                     </button>
                                 </SwiperSlide>
                             ))}

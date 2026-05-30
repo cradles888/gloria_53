@@ -20,6 +20,46 @@ const formatSettlementDate = (date) => {
   return "";
 };
 
+const buildGallery = (apartment, sortedImages) => {
+  const seen = new Set();
+  const gallery = [];
+
+  const add = (item) => {
+    if (item.src && !seen.has(item.src)) {
+      seen.add(item.src);
+      gallery.push(item);
+    }
+  };
+
+  // 1. Планировка квартиры — прямое поле, полное разрешение
+  add({
+    src: apartment.mainImage,
+    caption: "Планировка квартиры",
+    alt: `Планировка квартиры №${apartment.number}`,
+    type: "layout",
+  });
+
+  // 2. План этажа
+  add({
+    src: apartment.planImage,
+    caption: "План этажа",
+    alt: `План этажа, квартира №${apartment.number}`,
+    type: "floor_plan",
+  });
+
+  // 3. Дополнительные фото из ApartmentImage
+  sortedImages.forEach((img) =>
+    add({
+      src: img.url,
+      caption: img.title || "Фото квартиры",
+      alt: img.title || `Квартира №${apartment.number}`,
+      type: img.type,
+    }),
+  );
+
+  return gallery;
+};
+
 const serializeApartment = (apartment) => {
   const sortedImages = [...apartment.images].sort(
     (a, b) => a.sortOrder - b.sortOrder,
@@ -72,14 +112,7 @@ const serializeApartment = (apartment) => {
       sortOrder: room.sortOrder,
     })),
 
-    images: sortedImages.map((image) => ({
-      id: image.id,
-      src: image.url,
-      caption: image.title || "Изображение квартиры",
-      alt: image.title || `Квартира №${apartment.number}`,
-      type: image.type,
-      sortOrder: image.sortOrder,
-    })),
+    images: buildGallery(apartment, sortedImages),
   };
 };
 

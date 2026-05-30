@@ -188,6 +188,147 @@ export const deleteApartment = async (formData) => {
   redirect("/g53-manager/apartments");
 };
 
+export const createBuilding = async (formData) => {
+  await requireAdmin();
+
+  const complexId = Number(formData.get("complexId"));
+  if (!complexId) redirect("/g53-manager/buildings/new?error=required");
+
+  await prisma.building.create({
+    data: {
+      complexId,
+      name: String(formData.get("name") || "").trim() || null,
+      position: String(formData.get("position") || "").trim() || null,
+      address: String(formData.get("address") || "").trim() || null,
+      floorsTotal: Number(formData.get("floorsTotal") || 0) || null,
+      entrancesTotal: Number(formData.get("entrancesTotal") || 0) || null,
+      plannedSettlementDate: parseDate(formData.get("plannedSettlementDate")),
+      heroImage: String(formData.get("heroImage") || "").trim() || null,
+      status: String(formData.get("status") || "active").trim(),
+    },
+  });
+
+  revalidatePath("/apartments");
+  revalidatePath("/g53-manager/buildings");
+  redirect("/g53-manager/buildings");
+};
+
+export const deleteBuilding = async (formData) => {
+  await requireAdmin();
+
+  const id = Number(formData.get("id"));
+  if (!id) return;
+
+  const apartmentCount = await prisma.apartment.count({ where: { buildingId: id } });
+  if (apartmentCount > 0) {
+    redirect(`/g53-manager/buildings/${id}?error=has-apartments`);
+  }
+
+  await prisma.building.delete({ where: { id } });
+
+  revalidatePath("/apartments");
+  revalidatePath("/g53-manager/buildings");
+  redirect("/g53-manager/buildings");
+};
+
+export const updateBuilding = async (formData) => {
+  await requireAdmin();
+
+  const id = Number(formData.get("id"));
+  if (!id) redirect("/g53-manager/buildings?error=required");
+
+  await prisma.building.update({
+    where: { id },
+    data: {
+      name: String(formData.get("name") || "").trim() || null,
+      position: String(formData.get("position") || "").trim() || null,
+      address: String(formData.get("address") || "").trim() || null,
+      floorsTotal: Number(formData.get("floorsTotal") || 0) || null,
+      entrancesTotal: Number(formData.get("entrancesTotal") || 0) || null,
+      plannedSettlementDate: parseDate(formData.get("plannedSettlementDate")),
+      heroImage: String(formData.get("heroImage") || "").trim() || null,
+      status: String(formData.get("status") || "active").trim(),
+    },
+  });
+
+  revalidatePath("/apartments");
+  revalidatePath("/g53-manager/buildings");
+  redirect(`/g53-manager/buildings/${id}`);
+};
+
+const parseImages = (formData) => {
+  const all = formData.getAll("images").map((s) => String(s).trim()).filter(Boolean);
+  if (all.length > 0) return all;
+  return String(formData.get("images") || "")
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+};
+
+const parseCoordinates = (lng, lat) => {
+  const x = parseFloat(lng);
+  const y = parseFloat(lat);
+  if (isNaN(x) || isNaN(y)) return [];
+  return [x, y];
+};
+
+export const createBuiltObject = async (formData) => {
+  await requireAdmin();
+
+  await prisma.builtObject.create({
+    data: {
+      title: String(formData.get("title") || "").trim(),
+      year: String(formData.get("year") || "").trim(),
+      description: String(formData.get("description") || "").trim() || null,
+      images: parseImages(formData),
+      coordinates: parseCoordinates(formData.get("lng"), formData.get("lat")),
+      complex: String(formData.get("complex") || "").trim() || null,
+      sortOrder: Number(formData.get("sortOrder") || 0),
+    },
+  });
+
+  revalidatePath("/built-object");
+  revalidatePath("/g53-manager/built-objects");
+  redirect("/g53-manager/built-objects");
+};
+
+export const updateBuiltObject = async (formData) => {
+  await requireAdmin();
+
+  const id = Number(formData.get("id"));
+  if (!id) redirect("/g53-manager/built-objects?error=required");
+
+  await prisma.builtObject.update({
+    where: { id },
+    data: {
+      title: String(formData.get("title") || "").trim(),
+      year: String(formData.get("year") || "").trim(),
+      description: String(formData.get("description") || "").trim() || null,
+      images: parseImages(formData),
+      coordinates: parseCoordinates(formData.get("lng"), formData.get("lat")),
+      complex: String(formData.get("complex") || "").trim() || null,
+      sortOrder: Number(formData.get("sortOrder") || 0),
+    },
+  });
+
+  revalidatePath("/built-object");
+  revalidatePath("/g53-manager/built-objects");
+  redirect(`/g53-manager/built-objects/${id}`);
+};
+
+export const deleteBuiltObject = async (formData) => {
+  await requireAdmin();
+
+  const id = Number(formData.get("id"));
+  if (!id) return;
+
+  await prisma.builtObject.delete({ where: { id } });
+
+  revalidatePath("/built-object");
+  revalidatePath("/g53-manager/built-objects");
+  redirect("/g53-manager/built-objects");
+};
+
 export const updateApplicationStatus = async (formData) => {
   await requireAdmin();
 

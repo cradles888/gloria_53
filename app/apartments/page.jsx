@@ -22,10 +22,6 @@ const serializeApartment = (apartment) => {
     (a, b) => a.sortOrder - b.sortOrder,
   );
 
-  const mainImageMedium = sortedImages.find(
-    (image) => image.type === "layout_medium",
-  );
-
   return {
     id: apartment.id,
     number: apartment.number,
@@ -36,7 +32,6 @@ const serializeApartment = (apartment) => {
     pricePerSqm: apartment.pricePerSqm,
 
     mainImage: apartment.mainImage || sortedImages[0]?.url || "",
-    mainImageMedium: mainImageMedium?.url || "",
     planImage: apartment.planImage || "",
     imageAlt: `Планировка квартиры №${apartment.number}`,
 
@@ -57,6 +52,7 @@ const serializeApartment = (apartment) => {
     complexAddress: apartment.building.complex.address,
     buildingAddress: apartment.building.address,
 
+    buildingId: apartment.buildingId,
     apartmentType: "Квартира",
     article: apartment.article,
 
@@ -77,11 +73,8 @@ const serializeApartment = (apartment) => {
 };
 
 const getApartmentsPageData = async () => {
-  const [apartments, complexes] = await Promise.all([
+  const [apartments, complexes, buildings] = await Promise.all([
     prisma.apartment.findMany({
-      where: {
-        status: "available",
-      },
       include: {
         building: {
           include: {
@@ -110,27 +103,64 @@ const getApartmentsPageData = async () => {
     }),
 
     prisma.residentialComplex.findMany({
-      where: {
-        status: "active",
-      },
-      orderBy: {
-        id: "asc",
-      },
+      where: { status: "active" },
+      orderBy: { id: "asc" },
+    }),
+
+    prisma.building.findMany({
+      where: { status: "active" },
+      include: { complex: true },
+      orderBy: { id: "asc" },
     }),
   ]);
 
   return {
-    apartments: apartments.map(serializeApartment),
+    apartments: apartments.map((apt) => ({ ...serializeApartment(apt), status: apt.status })),
     complexes: complexes.map((complex) => ({
       id: complex.id,
       name: complex.name,
       slug: complex.slug,
     })),
+    buildings: buildings.map((building) => ({
+      id: building.id,
+      position: building.position || "",
+      name: building.name || "",
+      address: building.address || "",
+      floorsTotal: building.floorsTotal,
+      heroImage: building.heroImage || "",
+      complexId: building.complexId,
+      complexName: building.complex.name,
+      settlementDate: formatSettlementDate(building.plannedSettlementDate),
+    })),
   };
 };
 
-export default async function ApartmentsPage() {
-  const { apartments, complexes } = await getApartmentsPageData();
+const parseInitialFilters = (searchParams) => {
+  const rooms = searchParams.rooms
+    ? String(searchParams.rooms).split(",").filter(Boolean)
+    : [];
+  const priceFrom = parseFloat(searchParams.priceFrom);
+  const priceTo = parseFloat(searchParams.priceTo);
+  return {
+    rooms,
+    priceRange: [
+      isNaN(priceFrom) ? 0 : priceFrom,
+      isNaN(priceTo) ? 17 : priceTo,
+    ],
+  };
+};
 
-  return <ApartmentsCatalog apartments={apartments} complexes={complexes} />;
+export default async function ApartmentsPage({ searchParams }) {
+  const { apartments, complexes, buildings } = await getApartmentsPageData();
+  const resolvedParams = await searchParams;
+  const initialFilters = parseInitialFilters(resolvedParams);
+
+  return (
+    <ApartmentsCatalog
+      apartments={apartments}
+      complexes={complexes}
+      buildings={buildings}
+      initialFilters={initialFilters}
+    />
+  );
 }

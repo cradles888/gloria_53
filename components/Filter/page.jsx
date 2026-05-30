@@ -7,6 +7,7 @@ import ButtonParam from "@/components/Filter/UI/ButtonSelectParam";
 import Button from "@/components/UI/Button";
 import Range from "@/components/Filter/UI/Range";
 import FilterModal from "@/components/Filter/UI/FilterModal";
+import BuildingPickerModal from "@/components/Filter/UI/BuildingPickerModal";
 import { ChevronRight } from "@/icons/ChevronRight";
 import styles from "./Filter.module.css";
 
@@ -20,6 +21,7 @@ export const DEFAULT_FILTERS = {
   floorFrom: "",
   floorTo: "",
   floorFeatures: [],
+  buildingId: null,
 };
 
 // Controlled mode: onFiltersChange + filters are passed from parent (ApartmentsCatalog).
@@ -29,12 +31,14 @@ const Filter = ({
   onFiltersChange,
   onReset,
   matchingCount = null,
+  buildings = [],
 } = {}) => {
   const router = useRouter();
   const isControlled = Boolean(onFiltersChange);
 
   const [internalFilters, setInternalFilters] = useState(DEFAULT_FILTERS);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isBuildingPickerOpen, setIsBuildingPickerOpen] = useState(false);
 
   const filters = isControlled ? externalFilters : internalFilters;
 
@@ -71,6 +75,11 @@ const Filter = ({
     matchingCount !== null
       ? `Показать предложения · ${matchingCount}`
       : "Показать предложения";
+
+  const selectedBuilding = buildings.find((b) => b.id === filters.buildingId);
+  const positionLabel = selectedBuilding
+    ? `Позиция ${selectedBuilding.position || selectedBuilding.name || selectedBuilding.id}`
+    : "Позиция";
 
   return (
     <>
@@ -113,6 +122,14 @@ const Filter = ({
                 activeParams={filters.rooms}
               />
             ))}
+
+            <Button
+              type="button"
+              onClick={() => setIsBuildingPickerOpen(true)}
+              variant="outline"
+            >
+              {positionLabel}
+            </Button>
 
             <Range
               values={filters.priceRange}
@@ -164,6 +181,15 @@ const Filter = ({
         onFiltersChange={updateFilter}
         onReset={handleReset}
         matchingCount={matchingCount}
+        buildings={buildings}
+      />
+
+      <BuildingPickerModal
+        isOpen={isBuildingPickerOpen}
+        onClose={() => setIsBuildingPickerOpen(false)}
+        buildings={buildings}
+        selectedBuildingId={filters.buildingId}
+        onSelect={(id) => updateFilter("buildingId", id)}
       />
     </>
   );

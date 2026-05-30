@@ -5,7 +5,6 @@ import { hasAdminSessionSecret, isAdminAuthenticated } from "@/lib/adminAuth";
 import { loginAdmin } from "./actions";
 import AdminNav from "./_components/AdminNav";
 import SectionMeter from "./_components/SectionMeter";
-import AdminEyebrow from "./_components/AdminEyebrow";
 
 export const metadata = {
   title: "Панель управления",
@@ -25,9 +24,7 @@ const LoginView = ({ hasError, hasConfigError }) => {
           action={loginAdmin}
           className="rounded-4xl bg-white p-6 shadow-sm sm:p-8"
         >
-          <AdminEyebrow variant="accent">Глория</AdminEyebrow>
-
-          <h1 className="mt-3 text-3xl font-medium text-dark">
+          <h1 className="text-3xl font-medium text-dark">
             Вход в панель
           </h1>
 
@@ -127,8 +124,7 @@ const DashboardView = async () => {
         <section className="mt-8 overflow-hidden rounded-4xl border border-dark15">
           <div className="grid lg:grid-cols-[0.8fr_1.2fr]">
             <div className="bg-dark p-6 text-white sm:p-8">
-              <AdminEyebrow variant="light">Навигация</AdminEyebrow>
-              <h2 className="mt-3 text-3xl font-medium leading-tight">
+              <h2 className="text-3xl font-medium leading-tight">
                 Выберите раздел сайта, с&nbsp;которым работаете сейчас
               </h2>
             </div>

@@ -96,7 +96,7 @@ export default async function NewsDetailPage({ params }) {
       <article className="py-10 lg:py-16">
         <Link
           href="/news"
-          className="inline-flex items-center gap-2 text-sm font-medium text-dark50 transition hover:text-accent"
+          className="inline-flex gap-2 text-sm font-medium text-dark50 transition hover:text-accent"
         >
           <ArrowRight className="h-4 w-4 rotate-180" />
           Назад к новостям
@@ -120,9 +120,12 @@ export default async function NewsDetailPage({ params }) {
                   {item.label}
                 </span>
 
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-dark10 text-accent">
+                <Link
+                  href="/news"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-dark10 text-accent"
+                >
                   <ArrowRight className="h-4 w-4 -rotate-45" />
-                </span>
+                </Link>
               </div>
             </header>
 
@@ -133,32 +136,10 @@ export default async function NewsDetailPage({ params }) {
                 </p>
               ))}
             </div>
-
-            <section className="mt-20 rounded-4xl bg-dark10 p-6 sm:p-8 lg:mt-40">
-              <div className="grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end">
-                <div>
-                  <p className="text-sm uppercase tracking-[0.18em] text-dark50">
-                    Коротко о материале
-                  </p>
-
-                  <h2 className="mt-3 text-2xl font-medium leading-tight text-dark">
-                    {item.excerpt || item.title}
-                  </h2>
-                </div>
-
-                <Link
-                  href="/news"
-                  className="inline-flex h-11 w-max items-center justify-center gap-2 rounded-4xl bg-white px-5 text-sm font-medium text-dark transition hover:bg-accent hover:text-white active:scale-[0.98]"
-                >
-                  Все новости
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </div>
-            </section>
           </div>
 
           <aside className="grid gap-5 lg:sticky lg:top-24">
-            <section className="rounded-4xl bg-[#F4F5F8] p-6 sm:p-8">
+            <section className="rounded-4xl bg-dark10 p-6 sm:p-8">
               <h2 className="text-xl font-medium text-dark">
                 Последние новости
               </h2>

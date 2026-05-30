@@ -8,6 +8,7 @@ import ComplexSelector from "@/components/ComplexSelector";
 import MortgageInfoBlock from "@/components/MortgageInfoBlock";
 import SliderSwitch from "@/components/UI/SliderSwitch";
 import AppartmentCard from "@/components/UI/AppartmentCard";
+import FloorPlanView from "@/components/Apartments/FloorPlanView";
 
 export const DEFAULT_FILTERS = {
   rooms: [],
@@ -17,10 +18,14 @@ export const DEFAULT_FILTERS = {
   floorFrom: "",
   floorTo: "",
   floorFeatures: [],
+  buildingId: null,
 };
 
 const applyFilters = (apartments, filters) =>
   apartments.filter((apt) => {
+    if (apt.status !== "available") return false;
+    if (filters.buildingId !== null && apt.buildingId !== filters.buildingId) return false;
+
     if (filters.rooms.length > 0 && !filters.rooms.includes(String(apt.rooms))) return false;
 
     const priceM = apt.price / 1_000_000;
@@ -40,11 +45,11 @@ const applyFilters = (apartments, filters) =>
     return true;
   });
 
-const ApartmentsCatalog = ({ apartments = [], complexes = [] }) => {
+const ApartmentsCatalog = ({ apartments = [], complexes = [], buildings = [], initialFilters = {} }) => {
   const [selectedComplex, setSelectedComplex] = useState(
     complexes[0]?.name || "ЖК Юннатов",
   );
-  const [filters, setFilters] = useState(DEFAULT_FILTERS);
+  const [filters, setFilters] = useState({ ...DEFAULT_FILTERS, ...initialFilters });
   const [view, setView] = useState("grid");
 
   const updateFilter = (key, value) =>
@@ -57,9 +62,24 @@ const ApartmentsCatalog = ({ apartments = [], complexes = [] }) => {
     [apartments, selectedComplex],
   );
 
+  const complexBuildings = useMemo(
+    () => buildings.filter((b) => b.complexName === selectedComplex),
+    [buildings, selectedComplex],
+  );
+
+  const handleComplexSelect = (name) => {
+    setSelectedComplex(name);
+    setFilters((prev) => ({ ...prev, buildingId: null }));
+  };
+
   const filteredApartments = useMemo(
     () => applyFilters(complexFiltered, filters),
     [complexFiltered, filters],
+  );
+
+  const filteredIds = useMemo(
+    () => new Set(filteredApartments.map((apt) => apt.id)),
+    [filteredApartments],
   );
 
   return (
@@ -69,7 +89,7 @@ const ApartmentsCatalog = ({ apartments = [], complexes = [] }) => {
           Квартиры в{" "}
           <ComplexSelector
             selectedComplex={selectedComplex}
-            onSelect={setSelectedComplex}
+            onSelect={handleComplexSelect}
             options={complexes}
           />
         </h1>
@@ -81,6 +101,7 @@ const ApartmentsCatalog = ({ apartments = [], complexes = [] }) => {
           onFiltersChange={updateFilter}
           onReset={resetFilters}
           matchingCount={filteredApartments.length}
+          buildings={complexBuildings}
         />
 
         <div className="mt-6 flex items-center justify-between gap-4">
@@ -95,7 +116,9 @@ const ApartmentsCatalog = ({ apartments = [], complexes = [] }) => {
 
       <MortgageInfoBlock />
 
-      {filteredApartments.length > 0 ? (
+      {view === "floor" ? (
+        <FloorPlanView apartments={complexFiltered} filteredIds={filteredIds} />
+      ) : filteredApartments.length > 0 ? (
         <div
           className={`${
             view === "grid"

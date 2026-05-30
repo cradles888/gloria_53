@@ -11,15 +11,9 @@ import {
 
 import Button from "@/components/UI/Button";
 import Range from "@/components/Filter/UI/Range";
+import BuildingPickerModal from "@/components/Filter/UI/BuildingPickerModal";
 
 const ROOM_OPTIONS = ["1", "2", "3"];
-
-const PROJECT_OPTIONS = [
-  "Все проекты",
-  "ЖК Юннатов, позиция 1",
-  "ЖК Юннатов, позиция 2",
-  "ЖК Юннатов, позиция 3",
-];
 
 const STATUS_OPTIONS = ["Свободные", "Забронированные", "Проданные"];
 
@@ -63,12 +57,14 @@ const FilterModal = ({
   onFiltersChange,
   onReset,
   matchingCount = null,
+  buildings = [],
 }) => {
-  // UI-only state — not wired to apartment filtering yet
-  const [selectedProject, setSelectedProject] = useState("Все проекты");
   const [selectedStatuses, setSelectedStatuses] = useState(["Свободные"]);
   const [selectedPurchaseOptions, setSelectedPurchaseOptions] = useState([]);
   const [selectedFinishing, setSelectedFinishing] = useState([]);
+  const [isPickerOpen, setIsPickerOpen] = useState(false);
+
+  const selectedBuilding = buildings.find((b) => b.id === filters.buildingId);
 
   const toggleUI = (value, setter) =>
     setter((prev) =>
@@ -90,7 +86,6 @@ const FilterModal = ({
   };
 
   const handleReset = () => {
-    setSelectedProject("Все проекты");
     setSelectedStatuses(["Свободные"]);
     setSelectedPurchaseOptions([]);
     setSelectedFinishing([]);
@@ -105,7 +100,7 @@ const FilterModal = ({
     filters.floorFeatures.length +
     (hasAreaFilter ? 1 : 0) +
     (hasFloorFilter ? 1 : 0) +
-    (selectedProject !== "Все проекты" ? 1 : 0) +
+    (filters.buildingId !== null && filters.buildingId !== undefined ? 1 : 0) +
     selectedPurchaseOptions.length +
     selectedFinishing.length;
 
@@ -204,21 +199,64 @@ const FilterModal = ({
                 {/* Column 2 */}
                 <div className="grid content-start gap-8">
                   <div className="grid gap-4">
-                    <h3 className="text-base font-medium text-dark">Проект</h3>
-                    <div className="h-12 content-center rounded-4xl border border-dark40 bg-white px-5 text-sm text-dark outline-none transition hover:border-accent focus:border-accent focus:ring-2 focus:ring-accent/20 active:border-accent">
-                      <select
-                        value={selectedProject}
-                        onChange={(e) => setSelectedProject(e.target.value)}
-                        className="w-full outline-none"
+                    <h3 className="text-base font-medium text-dark">Позиция</h3>
+                    {buildings.length === 0 ? (
+                      <span className="text-sm text-dark40">Нет доступных позиций</span>
+                    ) : selectedBuilding ? (
+                      <div className="flex items-center gap-2">
+                        {selectedBuilding.heroImage && (
+                          <img
+                            src={selectedBuilding.heroImage}
+                            alt=""
+                            className="h-10 w-14 shrink-0 rounded-xl object-cover"
+                          />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-medium text-dark">
+                            Позиция {selectedBuilding.position || selectedBuilding.name}
+                          </p>
+                          {selectedBuilding.settlementDate && (
+                            <p className="text-xs text-dark50">Сдача {selectedBuilding.settlementDate}</p>
+                          )}
+                        </div>
+                        <div className="flex shrink-0 gap-2">
+                          <button
+                            type="button"
+                            onClick={() => setIsPickerOpen(true)}
+                            className="h-8 rounded-full border border-dark15 px-3 text-xs text-dark transition hover:border-dark"
+                          >
+                            Изменить
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => onFiltersChange("buildingId", null)}
+                            className="flex h-8 w-8 items-center justify-center rounded-full border border-dark15 text-dark50 transition hover:border-red-300 hover:text-red-500"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setIsPickerOpen(true)}
+                        className="flex h-12 w-full items-center justify-between rounded-4xl border border-dark40 bg-white px-5 text-sm text-dark transition hover:border-accent hover:text-accent"
                       >
-                        {PROJECT_OPTIONS.map((project) => (
-                          <option key={project} value={project}>
-                            {project}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
+                        <span>Выбрать позицию</span>
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </button>
+                    )}
                   </div>
+
+                  <BuildingPickerModal
+                    isOpen={isPickerOpen}
+                    onClose={() => setIsPickerOpen(false)}
+                    buildings={buildings}
+                    selectedBuildingId={filters.buildingId}
+                    onSelect={(id) => onFiltersChange("buildingId", id)}
+                  />
 
                   <FilterGroup title="Условия покупки">
                     {PURCHASE_OPTIONS.map((option) => (

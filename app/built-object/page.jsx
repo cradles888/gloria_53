@@ -1,8 +1,9 @@
+import { prisma } from "@/lib/prisma";
 import Button from "@/components/UI/Button";
-import { formatText } from "@/utils/text-format";
 import BuiltObjectsMap from "@/components/BuiltObject/BuiltObjectsMap";
 import BuiltObjectGallery from "@/components/BuiltObject/BuiltObjectGallery";
-import { BUILT_OBJECTS } from "@/data/builtObjects";
+
+export const dynamic = "force-dynamic";
 
 const STATS = [
   {
@@ -85,7 +86,11 @@ const BuiltObjectPreview = ({ object }) => {
   );
 };
 
-const BuiltObjectsPage = () => {
+const BuiltObjectsPage = async () => {
+  const builtObjects = await prisma.builtObject.findMany({
+    orderBy: [{ sortOrder: "asc" }, { id: "asc" }],
+  });
+
   return (
     <main>
       <section className="container-padding section">
@@ -203,7 +208,7 @@ const BuiltObjectsPage = () => {
         </div>
 
         <div className="grid gap-6">
-          {BUILT_OBJECTS.map((object, index) => (
+          {builtObjects.map((object, index) => (
             <div key={object.id} id={`year-${object.year}`}>
               <BuiltObjectPreview object={object} index={index} />
             </div>
@@ -224,7 +229,7 @@ const BuiltObjectsPage = () => {
           </p> */}
         </div>
 
-        <BuiltObjectsMap />
+        <BuiltObjectsMap objects={builtObjects} />
       </section>
 
       {/* <section className="container-padding section mb-24">

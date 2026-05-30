@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import Button from "@/components/UI/Button";
-import AdminEyebrow from "../_components/AdminEyebrow";
 import { requireAdmin } from "@/lib/adminAuth";
 import AdminNav from "../_components/AdminNav";
 import AdminPagination from "../_components/AdminPagination";
 import SectionMeter from "../_components/SectionMeter";
 import Link from "next/link";
+import ApartmentImportButton from "./_components/ApartmentImportButton";
+import ApartmentsViewToggle from "./_components/ApartmentsViewToggle";
 
 export const metadata = {
   title: "Квартиры",
@@ -18,10 +19,6 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 const PAGE_SIZE = 8;
-
-const formatPrice = (value) => {
-  return new Intl.NumberFormat("ru-RU").format(value);
-};
 
 export default async function ManagerApartmentsPage({ searchParams }) {
   await requireAdmin();
@@ -54,6 +51,19 @@ export default async function ManagerApartmentsPage({ searchParams }) {
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);
 
+  const serializedApartments = apartments.map((apt) => ({
+    id: apt.id,
+    number: apt.number,
+    rooms: apt.rooms,
+    floor: apt.floor,
+    entrance: apt.entrance,
+    areaTotal: apt.areaTotal.toString(),
+    price: apt.price,
+    status: apt.status,
+    position: apt.building.position ?? "",
+    complexName: apt.building.complex.name,
+  }));
+
   return (
     <main className="container-padding">
       <section className="py-10 lg:py-16">
@@ -71,53 +81,17 @@ export default async function ManagerApartmentsPage({ searchParams }) {
 
         <section className="mt-8 overflow-hidden rounded-4xl border border-dark15 bg-white">
           <div className="flex flex-col gap-4 border-b border-dark15 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-            <div>
-              <AdminEyebrow>Каталог</AdminEyebrow>
-              <h2 className="mt-2 text-2xl font-medium text-dark">
-                Список квартир
-              </h2>
+            <h2 className="text-2xl font-medium text-dark">Список квартир</h2>
+
+            <div className="flex flex-wrap items-start gap-3">
+              <ApartmentImportButton />
+              <Button variant="dark" size="sm" linkToPage="/g53-manager/apartments/new">
+                Добавить квартиру
+              </Button>
             </div>
-
-            <Button variant="dark" size="sm" linkToPage="/g53-manager/apartments/new">
-              Добавить квартиру
-            </Button>
           </div>
 
-          <div className="divide-y divide-dark15">
-            {apartments.map((apartment) => (
-              <div
-                key={apartment.id}
-                className="grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-6"
-              >
-                <div>
-                  <p className="text-lg font-medium text-dark">
-                    №{apartment.number} · {apartment.rooms}-комн. ·{" "}
-                    {apartment.areaTotal.toString()} м²
-                  </p>
-                  <p className="mt-2 text-sm text-dark50">
-                    {apartment.building.complex.name} · позиция{" "}
-                    {apartment.building.position || "—"} · этаж{" "}
-                    {apartment.floor}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 sm:justify-end">
-                  <span className="rounded-full bg-dark10 px-3 py-1 text-sm text-dark80">
-                    {apartment.status === "available" ? "В продаже" : "Забронирована/Продана"}
-                  </span>
-                  <span className="text-sm font-medium text-dark">
-                    {formatPrice(apartment.price)} ₽
-                  </span>
-                  <Button variant="ghost" size="sm" linkToPage={`/g53-manager/apartments/${apartment.id}`}>
-                    Редактировать
-                  </Button>
-                  <Button variant="ghost" size="sm" linkToPage={`/apartments/${apartment.id}`}>
-                    Открыть
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
+          <ApartmentsViewToggle apartments={serializedApartments} />
         </section>
 
         <AdminPagination

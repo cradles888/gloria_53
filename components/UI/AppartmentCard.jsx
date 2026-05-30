@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { formatted } from "@/utils/formatPrice";
 import AmenityItem from "@/components/Amenity/AmenityItem";
 import FreemodeSliderChildren from "@/components/Swiper/FreemodeSliderChildren";
@@ -68,17 +70,19 @@ const ApartmentNumber = ({ number }) => {
   );
 };
 
-const ApartmentImage = ({ mainImage, mainImageMedium, imageAlt, className = "" }) => {
-  const imageSrc = mainImageMedium || mainImage;
-
-  if (!imageSrc) return null;
+const ApartmentImage = ({ mainImage, imageAlt, wrapperClassName = "", sizes = "280px" }) => {
+  if (!mainImage) return null;
 
   return (
-    <img
-      className={`mix-blend-multiply object-contain ${className}`}
-      src={imageSrc}
-      alt={imageAlt}
-    />
+    <div className={`relative ${wrapperClassName}`}>
+      <Image
+        src={mainImage}
+        alt={imageAlt}
+        fill
+        sizes={sizes}
+        className="object-contain mix-blend-multiply"
+      />
+    </div>
   );
 };
 
@@ -167,12 +171,12 @@ const ApartmentCardGrid = ({ apartment }) => {
       </header>
 
       <div className="grid h-full content-between">
-        <div className="my-8 flex place-self-center md:place-self-auto">
+        <div className="my-8 flex w-full justify-center md:place-self-auto">
           <ApartmentImage
             mainImage={apartment.mainImage}
-            mainImageMedium={apartment.mainImageMedium}
             imageAlt={apartment.imageAlt}
-            className="h-fit w-fit max-w-[280px]"
+            wrapperClassName="h-[220px] w-full max-w-[280px]"
+            sizes="(max-width: 768px) 70vw, 280px"
           />
         </div>
 
@@ -205,9 +209,9 @@ const ApartmentCardList = ({ apartment }) => {
       <div className="flex justify-center md:justify-start">
         <ApartmentImage
           mainImage={apartment.mainImage}
-          mainImageMedium={apartment.mainImageMedium}
           imageAlt={apartment.imageAlt}
-          className="h-[160px] w-full max-w-[220px] md:h-[130px] md:max-w-[160px]"
+          wrapperClassName="h-[160px] w-full max-w-[220px] md:h-[130px] md:max-w-[160px]"
+          sizes="(max-width: 768px) 50vw, 160px"
         />
       </div>
 

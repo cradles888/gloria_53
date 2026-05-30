@@ -20,6 +20,7 @@ const Button = ({
   iconClassName = "",
   iconPosition = "right",
   fullWidth = false,
+  form,
 }) => {
   const router = useRouter();
 
@@ -109,6 +110,7 @@ const Button = ({
   return (
     <button
       type={type}
+      form={form}
       disabled={isLoading || disabled}
       onClick={handleClick}
       className={`

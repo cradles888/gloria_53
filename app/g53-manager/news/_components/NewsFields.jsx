@@ -1,9 +1,16 @@
+"use client";
+
+import { useState } from "react";
+import ImageUpload from "@/components/UI/ImageUpload";
+
 const formatInputDate = (date) => {
   if (!date) return "";
-  return date.toISOString().slice(0, 10);
+  return new Date(date).toISOString().slice(0, 10);
 };
 
 const NewsFields = ({ item = null }) => {
+  const [image, setImage] = useState(item?.image || "");
+
   return (
     <div className="grid gap-4">
       {item ? <input type="hidden" name="id" value={item.id} /> : null}
@@ -96,15 +103,13 @@ const NewsFields = ({ item = null }) => {
         </label>
       </div>
 
-      <label className="grid gap-2 text-sm font-medium text-dark">
-        Изображение
-        <input
-          name="image"
-          defaultValue={item?.image || ""}
-          placeholder="/images/news/news1.jpg"
-          className="h-12 rounded-4xl border border-dark15 bg-white px-5 text-base outline-none transition focus:border-accent"
-        />
-      </label>
+      <input type="hidden" name="image" value={image} />
+      <ImageUpload
+        value={image}
+        folder="news"
+        label="Изображение"
+        onChange={setImage}
+      />
 
       <div className="flex flex-wrap gap-6">
         <label className="flex items-center gap-2 text-sm font-medium text-dark">

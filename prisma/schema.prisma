@@ -38,6 +38,7 @@ model Building {
   floorsTotal           Int?
   entrancesTotal        Int?
   plannedSettlementDate DateTime?
+  heroImage             String?
   status                String   @default("active")
 
   complex               ResidentialComplex @relation(fields: [complexId], references: [id])
@@ -45,6 +46,9 @@ model Building {
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
+
+  @@index([complexId])
+  @@index([complexId, status])
 }
 
 model Apartment {
@@ -77,6 +81,11 @@ model Apartment {
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+
+  @@index([buildingId])
+  @@index([status])
+  @@index([buildingId, status])
+  @@index([buildingId, floor, entrance])
 }
 
 model ApartmentImage {
@@ -88,6 +97,8 @@ model ApartmentImage {
   sortOrder   Int      @default(0)
 
   apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  @@index([apartmentId])
 }
 
 model ApartmentRoomArea {
@@ -98,6 +109,8 @@ model ApartmentRoomArea {
   sortOrder   Int      @default(0)
 
   apartment   Apartment @relation(fields: [apartmentId], references: [id], onDelete: Cascade)
+
+  @@index([apartmentId])
 }
 
 model Amenity {
@@ -144,6 +157,9 @@ model Application {
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@index([status])
+  @@index([apartmentId])
 }
 
 model NewsItem {
@@ -170,6 +186,20 @@ model NewsItem {
 
   @@index([type])
   @@index([isPublished, publishedAt])
+}
+
+model BuiltObject {
+  id          Int      @id @default(autoincrement())
+  title       String
+  year        String
+  description String?
+  images      String[] @default([])
+  coordinates Float[]  @default([])
+  complex     String?
+  sortOrder   Int      @default(0)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model AdminUser {

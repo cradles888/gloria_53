@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-import { BUILT_OBJECTS } from "@/data/builtObjects";
 
 const DEFAULT_CENTER = [31.2755, 58.5228];
 
-const BuiltObjectsMap = () => {
+const BuiltObjectsMap = ({ objects = [] }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
-  const [selectedObject, setSelectedObject] = useState(BUILT_OBJECTS[0]);
+  const [selectedObject, setSelectedObject] = useState(objects[0]);
 
   const initMap = useCallback(async () => {
     if (!mapRef.current || mapInstanceRef.current || !window.ymaps3) {
@@ -46,7 +45,7 @@ const BuiltObjectsMap = () => {
     map.addChild(new YMapDefaultFeaturesLayer());
 
     // маркеры
-    BUILT_OBJECTS.forEach((object) => {
+    objects.forEach((object) => {
       const markerElement = document.createElement("button");
       markerElement.type = "button";
       markerElement.className = `

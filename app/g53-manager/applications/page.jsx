@@ -3,7 +3,6 @@ import { requireAdmin } from "@/lib/adminAuth";
 import { updateApplicationStatus } from "../actions";
 import AdminNav from "../_components/AdminNav";
 import AdminPagination from "../_components/AdminPagination";
-import AdminEyebrow from "../_components/AdminEyebrow";
 import SectionMeter from "../_components/SectionMeter";
 
 export const metadata = {
@@ -87,8 +86,7 @@ export default async function ManagerApplicationsPage({ searchParams }) {
 
         <section className="mt-8 overflow-hidden rounded-4xl border border-dark15 bg-white">
           <div className="border-b border-dark15 p-5 sm:p-6">
-            <AdminEyebrow>Входящие</AdminEyebrow>
-            <h2 className="mt-2 text-2xl font-medium text-dark">Список заявок</h2>
+            <h2 className="text-2xl font-medium text-dark">Список заявок</h2>
           </div>
 
           <div className="overflow-x-auto">

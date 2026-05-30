@@ -17,7 +17,7 @@ const PromoSlider = ({ items = [] }) => {
         slidesPerView={1}
         spaceBetween={20}
         loop={items.length > 1}
-        autoHeight={true}
+        autoHeight={false}
         autoplay={{
           delay: 4500,
           disableOnInteraction: false,
@@ -27,7 +27,7 @@ const PromoSlider = ({ items = [] }) => {
         {items.map((item) => (
           <SwiperSlide
             key={item.id}
-            className="lg:h-85!"
+            className=""
           >
             <FeaturedPromoBlock item={item} />
           </SwiperSlide>

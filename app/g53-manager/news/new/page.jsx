@@ -1,6 +1,5 @@
 import { requireAdmin } from "@/lib/adminAuth";
 import Button from "@/components/UI/Button";
-import AdminEyebrow from "../../_components/AdminEyebrow";
 import { createNewsItem } from "../../actions";
 import AdminNav from "../../_components/AdminNav";
 import NewsFields from "../_components/NewsFields";
@@ -23,8 +22,7 @@ export default async function ManagerNewsNewPage() {
         <section className="mt-10 rounded-4xl bg-dark10 p-5 sm:p-6 lg:p-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <AdminEyebrow>Действие</AdminEyebrow>
-              <h2 className="mt-2 text-2xl font-medium text-dark">
+              <h2 className="text-2xl font-medium text-dark">
                 Добавить материал
               </h2>
             </div>

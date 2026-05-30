@@ -1,11 +1,10 @@
 import Link from "next/link";
 
 import { logoutAdmin } from "../actions";
-import AdminEyebrow from "./AdminEyebrow";
-
 const tabs = [
   { href: "/g53-manager", label: "Обзор", id: "overview" },
   { href: "/g53-manager/apartments", label: "Квартиры", id: "apartments" },
+  { href: "/g53-manager/buildings", label: "Дома", id: "buildings" },
   { href: "/g53-manager/news", label: "Новости", id: "news" },
   { href: "/g53-manager/applications", label: "Заявки", id: "applications" },
   {
@@ -13,15 +12,15 @@ const tabs = [
     label: "Построенные объекты",
     id: "built-objects",
   },
+  { href: "/g53-manager/media", label: "Медиатека", id: "media" },
 ];
 
-const AdminNav = ({ active = "overview", eyebrow = "Панель управления", title }) => {
+const AdminNav = ({ active = "overview", title }) => {
   return (
     <header className="">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <AdminEyebrow variant="accent">{eyebrow}</AdminEyebrow>
-          <h1 className="mt-3 text-4xl font-medium leading-tight text-dark md:text-5xl">
+          <h1 className="text-4xl font-medium leading-tight text-dark md:text-5xl">
             {title}
           </h1>
         </div>

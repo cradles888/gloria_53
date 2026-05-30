@@ -204,21 +204,15 @@ const apartmentsSeed = [
     layoutType: "Квартира",
     article: "ГЛ-1-2-70.9-0",
 
-    mainImage: "/apartments/2-45.7.jpg",
+    mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
 
     images: [
       {
-        url: "/apartments/2-45.7.jpg",
+        url: "/apartments/2-45.png",
         title: "Планировка квартиры",
         type: "layout",
         sortOrder: 1,
-      },
-      {
-        url: "/apartments/2-45-medium.png",
-        title: "Планировка квартиры, улучшенное качество",
-        type: "layout_medium",
-        sortOrder: 2,
       },
       {
         url: "/apartments/general-plan.jpg",
@@ -257,21 +251,15 @@ const apartmentsSeed = [
     layoutType: "Квартира",
     article: "ГЛ-1-2-45.7-1",
 
-    mainImage: "/apartments/2-45.7.jpg",
+    mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
 
     images: [
       {
-        url: "/apartments/2-45.7.jpg",
+        url: "/apartments/2-45.png",
         title: "Планировка квартиры",
         type: "layout",
         sortOrder: 1,
-      },
-      {
-        url: "/apartments/2-45-medium.png",
-        title: "Планировка квартиры, улучшенное качество",
-        type: "layout_medium",
-        sortOrder: 2,
       },
       {
         url: "/apartments/general-plan.jpg",
@@ -301,21 +289,15 @@ const apartmentsSeed = [
     layoutType: "Квартира",
     article: "ГЛ-1-2-45.7-2",
 
-    mainImage: "/apartments/2-45.7.jpg",
+    mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
 
     images: [
       {
-        url: "/apartments/2-45.7.jpg",
+        url: "/apartments/2-45.png",
         title: "Планировка квартиры",
         type: "layout",
         sortOrder: 1,
-      },
-      {
-        url: "/apartments/2-45-medium.png",
-        title: "Планировка квартиры, улучшенное качество",
-        type: "layout_medium",
-        sortOrder: 2,
       },
       {
         url: "/apartments/general-plan.jpg",
@@ -345,12 +327,12 @@ const apartmentsSeed = [
     layoutType: "Квартира",
     article: "ГЛ-1-2-45.7-3",
 
-    mainImage: "/apartments/2-45.7.jpg",
+    mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
 
     images: [
       {
-        url: "/apartments/2-45.7.jpg",
+        url: "/apartments/2-45.png",
         title: "Планировка квартиры",
         type: "layout",
         sortOrder: 1,
@@ -383,12 +365,12 @@ const apartmentsSeed = [
     layoutType: "Квартира",
     article: "ГЛ-1-2-45.7-4",
 
-    mainImage: "/apartments/2-45.7.jpg",
+    mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
 
     images: [
       {
-        url: "/apartments/2-45.7.jpg",
+        url: "/apartments/2-45.png",
         title: "Планировка квартиры",
         type: "layout",
         sortOrder: 1,
@@ -421,12 +403,12 @@ const apartmentsSeed = [
     layoutType: "Квартира",
     article: "ГЛ-1-2-45.7-5",
 
-    mainImage: "/apartments/2-45.7.jpg",
+    mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
 
     images: [
       {
-        url: "/apartments/2-45.7.jpg",
+        url: "/apartments/2-45.png",
         title: "Планировка квартиры",
         type: "layout",
         sortOrder: 1,
@@ -459,12 +441,12 @@ const apartmentsSeed = [
     layoutType: "Квартира",
     article: "ГЛ-1-2-45.7-6",
 
-    mainImage: "/apartments/2-45.7.jpg",
+    mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
 
     images: [
       {
-        url: "/apartments/2-45.7.jpg",
+        url: "/apartments/2-45.png",
         title: "Планировка квартиры",
         type: "layout",
         sortOrder: 1,

@@ -7,16 +7,12 @@ const NewsSidebar = ({ categories, activeCategory, onCategoryChange }) => {
     <aside className="w-full min-w-0 h-max lg:sticky lg:top-24">
       <div className="min-w-0 overflow-hidden rounded-4xl border border-dark10 bg-white shadow-sm">
         <div className="border-b border-dark10 p-5">
-          <p className="text-sm uppercase tracking-[0.18em] text-accent">
-            Навигация
-          </p>
-
           <h2 className="mt-2 text-2xl font-medium text-dark">
             Новости и акции
           </h2>
         </div>
 
-        <nav className="p-3">
+        <nav className="p-2">
           <div className="flex rounded-2xl gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
             {categories.map((category) => {
               const isActive = activeCategory === category.id;

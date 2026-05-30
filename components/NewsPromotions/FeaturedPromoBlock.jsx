@@ -8,24 +8,20 @@ const FeaturedPromoBlock = ({ item }) => {
   const href = item.slug ? `/news/${item.slug}` : "#";
 
   return (
-    <section className="group grid overflow-hidden rounded-3xl bg-[#EFEEE9] lg:h-full lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
-      <div className="order-2 flex flex-col justify-between p-5 text-dark sm:p-6 lg:order-1 lg:h-full lg:p-7">
-        <div>
+    <section className="group grid overflow-hidden rounded-3xl bg-[#EFEEE9] lg:border-l-0 h-120! sm:h-auto lg:h-100! lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
+      <div className="order-2 flex flex-col overflow-hidden p-5 text-dark sm:p-6 lg:order-1 lg:h-full lg:justify-between lg:p-7">
+        <div className="min-h-0 flex-1 overflow-hidden">
           <div className="mb-5 flex flex-wrap items-center gap-2">
             <span className="rounded-full bg-accent px-3.5 py-1.5 text-xs font-medium text-white">
-                {item.label || "Акция"}
+              {item.label || "Акция"}
             </span>
 
             {item.date ? (
-                <time className="rounded-full bg-dark10 px-3.5 py-1.5 text-xs font-medium text-dark80">
+              <time className="rounded-full text-xs font-medium text-dark80 px-3.5">
                 {item.date}
               </time>
             ) : null}
           </div>
-
-          <p className="text-xs uppercase tracking-[0.2em] text-dark50">
-            В центре внимания
-          </p>
 
           <h2 className="mt-3 line-clamp-2 max-w-2xl text-2xl font-medium leading-tight text-dark sm:text-[28px]">
             {item.title}
@@ -38,7 +34,7 @@ const FeaturedPromoBlock = ({ item }) => {
           ) : null}
         </div>
 
-        <div className="mt-6 flex items-center gap-4">
+        <div className="mt-4 shrink-0 flex items-center gap-4">
           <Link
             href={href}
             className="inline-flex h-10 items-center justify-center gap-2 rounded-4xl bg-dark px-5 text-sm font-medium text-white transition duration-300 hover:bg-accent active:scale-[0.98]"

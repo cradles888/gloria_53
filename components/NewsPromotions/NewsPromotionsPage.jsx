@@ -43,8 +43,11 @@ const NewsPromotionsPage = ({ newsItems = [], categories = [] }) => {
             <PromoSlider items={promoItems} />
 
             <section className="mt-10">
-              <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                <div className="h-[0.25px] bg-dark/40 mb-5 w-full"></div>
+              <div className="mb-6 flex items-center gap-4">
+                <span className="shrink-0 text-xs font-semibold uppercase tracking-[0.10em] text-dark40">
+                  Все материалы
+                </span>
+                <div className="h-px flex-1 bg-dark/20" />
               </div>
 
               <NewsGrid items={filteredItems} />

@@ -8,7 +8,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const apartments = [
   {
-    // Основные данные
     position: "1",
     number: "10",
     rooms: 1,
@@ -20,7 +19,6 @@ const apartments = [
     pricePerSqm: 126154,
     status: "available",
 
-    // Помещения
     area_kitchen: 10.2,
     area_room1: 15.8,
     area_room2: "",
@@ -30,14 +28,12 @@ const apartments = [
     area_toilet: "",
     area_loggia: 2.4,
 
-    // Удобства
     amenity_rough_finish: "да",
     amenity_floor_heating: "",
     amenity_separate_bathroom: "",
     amenity_air_conditioner: "",
     amenity_balcony: "да",
 
-    // Изображения
     mainImage: "10-layout.jpg",
     planImage: "pos1-genplan.jpg",
     image1: "10-layout-hq.png",
@@ -148,7 +144,6 @@ const apartments = [
 // ─── Заголовки с русскими метками для читаемости ─────────────────────────────
 
 const HEADERS = {
-  // Основные
   position:       "position\n(позиция дома)",
   number:         "number *\n(номер квартиры)",
   rooms:          "rooms *\n(комнат)",
@@ -160,7 +155,6 @@ const HEADERS = {
   pricePerSqm:    "pricePerSqm *\n(цена за м², ₽)",
   status:         "status *\n(available / sold / reserved)",
 
-  // Помещения
   area_kitchen:   "area_kitchen\n(кухня, м²)",
   area_room1:     "area_room1\n(комната 1, м²)",
   area_room2:     "area_room2\n(комната 2, м²)",
@@ -170,14 +164,12 @@ const HEADERS = {
   area_toilet:    "area_toilet\n(с/у, м²)",
   area_loggia:    "area_loggia\n(лоджия/балкон, м²)",
 
-  // Удобства
   amenity_rough_finish:       "amenity_rough_finish\n(предчистовая отделка)",
   amenity_floor_heating:      "amenity_floor_heating\n(подогрев полов)",
   amenity_separate_bathroom:  "amenity_separate_bathroom\n(раздельный с/у)",
   amenity_air_conditioner:    "amenity_air_conditioner\n(кондиционер)",
   amenity_balcony:            "amenity_balcony\n(балкон)",
 
-  // Изображения
   mainImage: "mainImage *\n(главное фото, имя файла)",
   planImage: "planImage *\n(план этажа, имя файла)",
   image1:    "image1\n(галерея 1)",
@@ -293,4 +285,4 @@ XLSX.utils.book_append_sheet(wb, wsHelp, "Справка");
 const outputPath = path.join(__dirname, "..", "apartments-import-template.xlsx");
 XLSX.writeFile(wb, outputPath);
 
-console.log(`✓ Файл создан: ${outputPath}`);
+console.log(`Файл создан: ${outputPath}`);

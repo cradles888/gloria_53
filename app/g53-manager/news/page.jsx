@@ -1,6 +1,5 @@
 import { prisma } from "@/lib/prisma";
 import Button from "@/components/UI/Button";
-import AdminEyebrow from "../_components/AdminEyebrow";
 import { requireAdmin } from "@/lib/adminAuth";
 import AdminNav from "../_components/AdminNav";
 import AdminPagination from "../_components/AdminPagination";
@@ -73,8 +72,7 @@ export default async function ManagerNewsPage({ searchParams }) {
         <section className="mt-8 overflow-hidden rounded-4xl border border-dark15 bg-white">
           <div className="flex flex-col gap-4 border-b border-dark15 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
-              <AdminEyebrow>Контент</AdminEyebrow>
-              <h2 className="mt-2 text-2xl font-medium text-dark">
+              <h2 className="text-2xl font-medium text-dark">
                 Список материалов
               </h2>
             </div>
