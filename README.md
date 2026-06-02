@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏙️ Gloria53
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB)](https://react.dev/)
+[![Prisma](https://img.shields.io/badge/Prisma-6-2D3748)](https://www.prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Supabase-336791)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38BDF8)](https://tailwindcss.com/)
 
-First, run the development server:
+**Gloria53** — информационный веб-ресурс с онлайн-инструментами для строительной компании ООО «Глория». Сайт раскрывает деятельность застройщика, позволяет покупателю **подобрать квартиру по собственным параметрам**, изучить планировки и ход строительства, следить за новостями и **оставить заявку на обратную связь**. Для сотрудников предусмотрена админ-панель с управлением каталогом, медиатекой и массовым импортом квартир из Excel.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+> ⚠️ Статус: **активная разработка / дипломный проект**. Веб-приложение развёрнуто и работает; функционал продолжает дорабатываться.
+
+---
+
+## ✨ Возможности
+
+- 🔎 Каталог квартир с фильтром по ЖК, корпусу, числу комнат, площади, цене и этажу
+- 🧩 Три режима каталога: **сетка**, **список** и **поэтажно** (шахматка по корпусам и этажам)
+- 🏠 Карточка квартиры: галерея фото, **планировка** и **план этажа** (Swiper с зумом, оптимизация next/image)
+- 🔗 Блок «Похожие квартиры» (тот же ЖК и комнатность, сортировка по площади)
+- 📝 Форма заявки на квартиру с серверной валидацией (Server Actions)
+- 🗺️ Страницы ЖК, готовых объектов и новостей застройщика; карты на **Яндекс.Картах**
+- 🛠️ Админ-панель `/g53-manager`: CRUD квартир, корпусов, новостей; привязка удобств
+- 📥 Массовая загрузка квартир через **Excel-таблицу** по шаблону (SheetJS)
+- 🖼️ **Медиатека**: загрузка изображений в Supabase Storage и копирование публичных ссылок
+
+---
+
+## 🧱 Технологический стек
+
+| Компонент | Технологии |
+| --- | --- |
+| Фронтенд | Next.js 16 (App Router), React 19 |
+| Стили и UI | Tailwind CSS 4, Headless UI, Framer Motion, Lucide, Swiper, React Range |
+| Бэкенд | Next.js Server Actions и API Route Handlers (Node.js) |
+| ORM / БД | Prisma 6 + PostgreSQL (Supabase) |
+| Файловое хранилище | Supabase Storage (бакет `gloria-images`) |
+| Карты | Яндекс.Карты (ymaps3) |
+| Импорт данных | SheetJS (`xlsx`) |
+| Развёртывание | Vercel |
+
+---
+
+## 🗂️ Структура проекта
+
+```
+gloria53/
+├── app/                 # маршруты App Router, страницы и Server Actions
+│   ├── apartments/      # каталог и карточка квартиры
+│   ├── g53-manager/     # админ-панель (CRUD, медиатека, импорт)
+│   └── api/             # route handlers (upload, media, import, template)
+├── components/          # React-компоненты (UI, каталог, галерея)
+├── lib/                 # клиент Supabase, вспомогательные модули
+├── prisma/              # schema.prisma, миграции, seed
+└── public/              # статические ресурсы
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Запуск (режим разработки)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install                              # установка зависимостей
+# создать .env с переменными окружения (см. ниже)
+npx prisma migrate dev --name init       # применить миграции
+npx prisma generate                      # сгенерировать Prisma Client
+npx prisma db seed                       # заполнить начальными данными
+npm run dev                              # http://localhost:3000
+```
 
-## Learn More
+### Переменные окружения (`.env`)
 
-To learn more about Next.js, take a look at the following resources:
+| Переменная | Назначение |
+| --- | --- |
+| `DATABASE_URL` | строка подключения к PostgreSQL (Supabase) |
+| `NEXT_PUBLIC_SUPABASE_URL` | адрес проекта Supabase (публичные изображения) |
+| `SUPABASE_SERVICE_ROLE_KEY` | служебный ключ Supabase Storage (только сервер) |
+| `ADMIN_SESSION_SECRET` | секрет для подписи сессии администратора |
+| `NEXT_PUBLIC_YANDEX_MAPS_API_KEY` | ключ API Яндекс.Карт |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> Файл `.env` не публикуется в репозитории. При размещении на Vercel переменные переносятся в настройки проекта, а `DATABASE_URL` указывается через transaction pooler Supabase.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📜 Лицензия
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Проект разработан в учебных целях для ООО «Глория».

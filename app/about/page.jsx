@@ -3,7 +3,7 @@ import Button from "@/components/UI/Button";
 const COMPANY_STATS = [
   {
     value: "1999",
-    label: "работаем с этого года",
+    label: "работаем с",
   },
   {
     value: "300",
