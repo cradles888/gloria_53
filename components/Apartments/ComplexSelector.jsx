@@ -46,7 +46,6 @@ const ComplexSelector = ({ selectedComplex, onSelect, options }) => {
         <ChevronRight className={`w-5 h-5 transition-transform duration-300 ${isOpenList ? "rotate-180" : ""}`} />
       </button>
 
-      {/* Десктопная версия - выпадающий список */}
       <div
         className={`
             p-2 absolute z-10
@@ -83,7 +82,6 @@ const ComplexSelector = ({ selectedComplex, onSelect, options }) => {
         ))}
       </div>
 
-      {/* Мобильная версия - модальное окно снизу */}
       <div
         className={`
         fixed sm:hidden
@@ -93,7 +91,6 @@ const ComplexSelector = ({ selectedComplex, onSelect, options }) => {
         ${isOpenList ? "translate-y-0" : "translate-y-full"}
     `}
       >
-        {/* Заголовок модального окна */}
         <div className="bg-white rounded-t-3xl border-t border-dark20 shadow-lg">
           <div className="flex justify-between items-center p-4 border-b border-dark10">
             <span className="text-lg font-medium text-dark">
@@ -119,7 +116,6 @@ const ComplexSelector = ({ selectedComplex, onSelect, options }) => {
             </button>
           </div>
 
-          {/* Список опций */}
           <div className="max-h-[60vh] overflow-y-auto">
             {listComplex.map((item, index) => (
               <div
@@ -162,7 +158,6 @@ const ComplexSelector = ({ selectedComplex, onSelect, options }) => {
             ))}
           </div>
 
-          {/* Кнопка отмены */}
           <div className="p-4 border-t border-dark10">
             <button
               onClick={toggleComplexList}
@@ -174,7 +169,6 @@ const ComplexSelector = ({ selectedComplex, onSelect, options }) => {
         </div>
       </div>
 
-      {/* Затемнение фона для мобильной версии */}
       {isOpenList && (
         <div
           className="fixed inset-0 bg-black/50 z-40 sm:hidden transition-opacity duration-300"

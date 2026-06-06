@@ -37,7 +37,6 @@ const HeroSearch = () => {
       onSubmit={handleSubmit}
       className="w-full rounded-4xl bg-white/95 p-5 shadow-xl backdrop-blur sm:p-6 lg:p-7"
     >
-      {/* Комнаты */}
       <div>
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-dark50">
           Количество комнат
@@ -63,7 +62,6 @@ const HeroSearch = () => {
         </div>
       </div>
 
-      {/* Цена + кнопка */}
       <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-end">
         <div className="flex-1">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-dark50">

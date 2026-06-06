@@ -13,23 +13,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
-import { useState } from "react";
 
 const ImageSlider = ({ data }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-
-  // const openModal = (imageSrc, imageAlt) => {
-  //   setSelectedImage({ src: imageSrc, alt: imageAlt });
-  //   setIsModalOpen(true);
-  //   document.body.style.overflow = "hidden";
-  // };
-
-  // const closeModal = () => {
-  //   setIsModalOpen(false);
-  //   setSelectedImage(null);
-  //   document.body.style.overflow = "auto";
-  // };
 
   return (
     <div className="relative w-full bg-[#4b362a] backdrop-blur-3xl h-screen">

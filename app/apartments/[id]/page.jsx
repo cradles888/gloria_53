@@ -32,7 +32,6 @@ const buildGallery = (apartment, sortedImages) => {
     }
   };
 
-  // 1. Планировка квартиры — прямое поле, полное разрешение
   add({
     src: apartment.mainImage,
     caption: "Планировка квартиры",
@@ -40,7 +39,6 @@ const buildGallery = (apartment, sortedImages) => {
     type: "layout",
   });
 
-  // 2. План этажа
   add({
     src: apartment.planImage,
     caption: "План этажа",
@@ -48,7 +46,6 @@ const buildGallery = (apartment, sortedImages) => {
     type: "floor_plan",
   });
 
-  // 3. Дополнительные фото из ApartmentImage
   sortedImages.forEach((img) =>
     add({
       src: img.url,
@@ -181,8 +178,6 @@ const toCardShape = (apt) => {
   };
 };
 
-// Похожие: тот же ЖК + те же комнаты (сортировка по близости площади),
-// добираем до 5 другими квартирами того же ЖК
 const getSimilarApartments = async (current) => {
   const pool = await prisma.apartment.findMany({
     where: {

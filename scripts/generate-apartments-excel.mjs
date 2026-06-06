@@ -4,7 +4,6 @@ import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// ─── Данные квартир ───────────────────────────────────────────────────────────
 
 const apartments = [
   {
@@ -141,7 +140,6 @@ const apartments = [
   },
 ];
 
-// ─── Заголовки с русскими метками для читаемости ─────────────────────────────
 
 const HEADERS = {
   position:       "position\n(позиция дома)",
@@ -179,21 +177,17 @@ const HEADERS = {
 
 const keys = Object.keys(HEADERS);
 
-// ─── Формируем строки ─────────────────────────────────────────────────────────
 
 const rows = apartments.map((apt) => keys.map((k) => apt[k] ?? ""));
 
-// ─── Создаём книгу ────────────────────────────────────────────────────────────
 
 const wb = XLSX.utils.book_new();
 
-// Лист с данными
 const wsData = XLSX.utils.aoa_to_sheet([
   Object.values(HEADERS),
   ...rows,
 ]);
 
-// Ширина колонок
 wsData["!cols"] = [
   { wch: 12 }, // position
   { wch: 14 }, // number
@@ -225,12 +219,11 @@ wsData["!cols"] = [
   { wch: 22 }, // image3
 ];
 
-// Высота строки заголовка
+// Высота заголовкa
 wsData["!rows"] = [{ hpt: 42 }];
 
 XLSX.utils.book_append_sheet(wb, wsData, "Квартиры");
 
-// Лист-справка
 const wsHelp = XLSX.utils.aoa_to_sheet([
   ["СПРАВКА ПО ЗАПОЛНЕНИЮ"],
   [],
@@ -279,8 +272,6 @@ const wsHelp = XLSX.utils.aoa_to_sheet([
 wsHelp["!cols"] = [{ wch: 28 }, { wch: 60 }];
 
 XLSX.utils.book_append_sheet(wb, wsHelp, "Справка");
-
-// ─── Сохраняем файл ───────────────────────────────────────────────────────────
 
 const outputPath = path.join(__dirname, "..", "apartments-import-template.xlsx");
 XLSX.writeFile(wb, outputPath);

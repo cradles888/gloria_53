@@ -3,7 +3,7 @@ import { requireAdmin } from "@/lib/adminAuth";
 import { getSupabase, BUCKET } from "@/lib/supabase";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
+const MAX_SIZE = 10 * 1024 * 1024;
 
 export async function POST(request) {
   try {

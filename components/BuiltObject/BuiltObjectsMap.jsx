@@ -44,7 +44,6 @@ const BuiltObjectsMap = ({ objects = [] }) => {
     map.addChild(new YMapDefaultSchemeLayer());
     map.addChild(new YMapDefaultFeaturesLayer());
 
-    // маркеры
     objects.forEach((object) => {
       const markerElement = document.createElement("button");
       markerElement.type = "button";
@@ -102,9 +101,7 @@ const BuiltObjectsMap = ({ objects = [] }) => {
     mapInstanceRef.current = map;
   }, []);
 
-  // Инициализация карты
   useEffect(() => {
-    // Небольшая задержка, чтобы ymaps3 точно подгрузился
     const timer = setTimeout(() => {
       initMap();
     }, 300);
@@ -132,9 +129,7 @@ const BuiltObjectsMap = ({ objects = [] }) => {
         />
         <aside className="grid relative h-full content-between gap-6 p-5 bg-black/20  sm:p-6 lg:p-7">
           <div>
-            {/* <span className="mb-4 inline-flex rounded-4xl bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
-            Выбранный объект
-          </span> */}
+
 
             <h3 className="text-2xl font-medium leading-tight text-white">
               {selectedObject.title}

@@ -13,7 +13,6 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-// ── Статичный контент (не зависит от БД) ────────────────────────
 
 const POPULAR_LOCATIONS = [
   { title: "Кремль", desc: "10 минут пешком", imageUrl: "/unnatov/kremlin.jpg", imageAlt: "Кремль" },
@@ -53,7 +52,6 @@ const STATIC_HISTORY = [
   { title: "Позиция №3", desc: "27.01.2026", imageUrl: "/unnatov/3-27.01.2026.jpg", imageAlt: "Позиция 3, январь 2026" },
 ];
 
-// ── Утилиты ─────────────────────────────────────────────────────
 
 const formatSettlementDate = (date: Date | null): string => {
   if (!date) return "";
@@ -62,7 +60,6 @@ const formatSettlementDate = (date: Date | null): string => {
   return `${quarters[quarter]} кв. ${date.getFullYear()}`;
 };
 
-// ── Страница ─────────────────────────────────────────────────────
 
 export default async function Unnatov() {
   const complex = await prisma.residentialComplex.findFirst({
@@ -109,7 +106,6 @@ export default async function Unnatov() {
 
   return (
     <div>
-      {/* ── Герой ──────────────────────────────────────────── */}
       <section className="min-h-screen">
         <div className="h-full bg-[url(/unnatov/bg.png)] bg-cover bg-no-repeat top-0 w-full -z-10 absolute" />
         <div className="bg-linear-to-b from-black/15 -z-10 to-transparent h-40 w-full absolute top-0" />
@@ -123,7 +119,6 @@ export default async function Unnatov() {
         </div>
       </section>
 
-      {/* ── Характеристики ─────────────────────────────────── */}
       <section className="container-padding mx-auto -mt-10 relative z-10">
         <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-4xl border border-dark15 bg-dark15 shadow-xl sm:grid-cols-4">
           {stats.map((stat) => (
@@ -135,7 +130,6 @@ export default async function Unnatov() {
         </dl>
       </section>
 
-      {/* ── Описание ───────────────────────────────────────── */}
       <div className="container-padding mx-auto mt-16 md:mt-20">
         <p className="text-black text-2xl sm:text-2xl md:text-[32px] mb-8 max-w-4xl">
           ЖК «Юннатов»&nbsp;— жилой комплекс на&nbsp;Псковской. Рядом
@@ -145,7 +139,6 @@ export default async function Unnatov() {
       </div>
 
       <div className="container-padding mx-auto">
-        {/* ── Популярные места ─────────────────────────────── */}
         <InfoBlock
           title={formatText("Популярные места в&nbsp;пешей доступности")}
           desc={formatText("Жизнь здесь&nbsp;— это когда самое интересное начинается за&nbsp;порогом дома. В&nbsp;нескольких минутах ходьбы&nbsp;— уютные кофейни, рестораны, парки для&nbsp;прогулок и&nbsp;все ключевые точки вашего городского маршрута.")}
@@ -158,21 +151,18 @@ export default async function Unnatov() {
       <SliderFullScreen data={FULL_SCREEN_SLIDES} />
 
       <div className="container-padding mx-auto">
-        {/* ── Инфраструктура ───────────────────────────────── */}
         <InfoBlock
           title={formatText("Инфраструктура и&nbsp;историческое окружение")}
           desc={formatText("Здесь гармонично соединяются дух прошлого и&nbsp;комфорт настоящего. Архитектурные памятники соседствуют с&nbsp;современными удобствами: супермаркеты, фитнес-центры, детские сады и&nbsp;клиники&nbsp;— всё в&nbsp;нескольких минутах ходьбы.")}
           data={HISTORICAL_LOCATIONS}
         />
 
-        {/* ── Образование ──────────────────────────────────── */}
         <InfoBlock
           title={formatTextWithBreaks("Образование<br/>Учёба для&nbsp;детей&nbsp;— рядом")}
           desc={formatText("Ваши дети смогут добираться до&nbsp;уроков, не&nbsp;тратя время на&nbsp;длинные переезды. В&nbsp;шаговой доступности детские сады, школы и&nbsp;развивающие центры.")}
           data={EDUCATION_BLOCK}
         />
 
-        {/* ── Особенности ──────────────────────────────────── */}
         <InfoBlock
           title="Особенности проекта"
           desc={formatText("Каждая деталь продумана для&nbsp;комфорта жизни. Закрытый двор без&nbsp;машин, натуральные отделочные материалы в&nbsp;подъездах, кирпичные стены с&nbsp;высокой тепло- и&nbsp;звукоизоляцией.")}
@@ -180,7 +170,6 @@ export default async function Unnatov() {
           slider={true}
         />
 
-        {/* ── Фотоотчёт ────────────────────────────────────── */}
         <div className="my-20 md:my-30">
           <h3 className="text-xl md:text-[32px] font-medium text-dark leading-[116%]">
             Фотоотчёт строительства
@@ -189,7 +178,6 @@ export default async function Unnatov() {
         </div>
       </div>
 
-      {/* ── CTA ──────────────────────────────────────────── */}
       <div className="container-padding mx-auto mb-20">
         <NewsCTA />
       </div>

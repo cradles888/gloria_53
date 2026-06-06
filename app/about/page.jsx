@@ -58,9 +58,7 @@ const AboutPage = () => {
       <section className="container-padding pb-10 pt-14 sm:pt-18 lg:pb-14 lg:pt-24">
         <div className="grid gap-8 lg:grid-cols-[1.4fr_0.95fr] lg:items-center">
           <div>
-            {/* <span className="mb-4 inline-flex rounded-4xl bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
-              О компании
-            </span> */}
+
 
             <h1 className="max-w-4xl text-3xl font-medium text-dark sm:text-5xl lg:text-5xl">
               ООО «Глория» — строительная компания из Великого Новгорода
@@ -131,9 +129,7 @@ const AboutPage = () => {
       <section className="container-padding section ">
         <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-12">
           <div>
-            {/* <span className="mb-4 inline-flex rounded-4xl bg-dark10 px-4 py-2 text-sm font-medium text-dark60">
-        Опыт компании
-      </span> */}
+        
 
             <h2 className="text-3xl font-medium leading-tight text-dark sm:text-4xl">
               Более двадцати лет в строительстве
@@ -157,16 +153,7 @@ const AboutPage = () => {
           </div>
 
           <div className="grid gap-4">
-            {/* <div className="grid gap-3 sm:grid-cols-2">
-        {EXPERIENCE_ITEMS.map((item) => (
-          <div
-            key={item}
-            className="rounded-4xl border border-dark10 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-          >
-            <p className="text-base font-medium text-dark">{item}</p>
-          </div>
-        ))}
-      </div> */}
+
 
             <div className="rounded-4xl bg-dark10 p-5 sm:p-6">
               <p className="mb-4 text-lg font-medium text-dark">
@@ -256,7 +243,6 @@ const AboutPage = () => {
       </section>
 
       <section className="container-padding section">
-        {/* Mobile / Tablet до 1024px */}
         <div className="relative overflow-hidden rounded-4xl bg-dark10 lg:hidden">
           <img
             src="/images/material-brick.png"
@@ -271,9 +257,7 @@ const AboutPage = () => {
 
           <div className="relative z-10 grid min-h-[520px] content-end gap-7 p-6 sm:min-h-[560px] sm:p-8">
             <div>
-              {/* <span className="mb-4 inline-flex rounded-4xl bg-white/15 px-4 py-2 text-sm text-white/90 backdrop-blur-sm">
-          Материалы
-        </span> */}
+           
 
               <h2 className="text-3xl font-medium leading-tight text-white sm:text-4xl">
                 Экологически чистый и надёжный материал
@@ -331,9 +315,7 @@ const AboutPage = () => {
 
           <div className="grid content-between">
             <div>
-              {/* <span className="mb-4 inline-flex rounded-4xl bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
-          Материалы
-        </span> */}
+             
 
               <h2 className="text-3xl font-medium leading-tight text-dark sm:text-4xl">
                 Экологически чистый и надёжный материал
@@ -378,9 +360,7 @@ const AboutPage = () => {
       <section className="container-padding section">
         <div className="rounded-4xl bg-dark10 p-6 sm:p-8 lg:p-10">
           <div className="mb-8 max-w-3xl">
-            {/* <span className="mb-4 inline-flex rounded-4xl bg-accent/10 px-4 py-2 text-sm font-medium text-accent">
-        Детальная информация
-      </span> */}
+           
 
             <h2 className="text-3xl font-medium leading-tight text-dark sm:text-4xl">
               Состав строительной компании «Глория»

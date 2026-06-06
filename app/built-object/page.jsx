@@ -95,7 +95,7 @@ const BuiltObjectsPage = async () => {
     <main>
       <section className="container-padding section">
         <div className="relative overflow-hidden rounded-4xl xl:grid xl:grid-cols-2 xl:gap-12">
-          {/* Фоновая картинка для мобильных и планшетов */}
+
           <img
             src="/builtObjects/parkovaya.jpg"
             alt=""
@@ -103,7 +103,6 @@ const BuiltObjectsPage = async () => {
             className="absolute inset-0 h-full w-full object-cover xl:hidden"
           />
 
-          {/* Затемнение фона на мобильных */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/55 to-black/25 xl:hidden" />
 
           <div className="relative z-10 grid gap-10 p-5 text-white sm:p-7 xl:content-center xl:p-0 xl:text-dark">
@@ -129,7 +128,6 @@ const BuiltObjectsPage = async () => {
               ))}
             </div>
 
-            {/* Бейдж на мобильных поверх фоновой картинки */}
             <div className="rounded-4xl bg-white/10 p-5 text-white shadow-2xl backdrop-blur-2xl xl:hidden">
               <div className="mb-3 flex flex-wrap gap-1">
                 <span className="inline-flex rounded-full bg-white px-3 py-1 text-xs font-medium text-dark">
@@ -147,7 +145,6 @@ const BuiltObjectsPage = async () => {
             </div>
           </div>
 
-          {/* Правая картинка только на desktop */}
           <div className="group relative hidden min-h-[420px] overflow-hidden rounded-4xl xl:block">
             <img
               src="/builtObjects/parkovaya.jpg"
@@ -178,22 +175,6 @@ const BuiltObjectsPage = async () => {
         </div>
       </section>
 
-      {/* <section className="container-padding section">
-        <div className="overflow-hidden rounded-4xl bg-dark10 p-4 sm:p-5">
-          <div className="flex gap-2 overflow-x-auto">
-            {YEARS.map((year) => (
-              <a
-                key={year}
-                href={`#year-${year}`}
-                className="min-w-max rounded-4xl bg-white px-5 py-3 text-sm font-medium text-dark transition hover:bg-accent hover:text-white"
-              >
-                {year}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
       <section className="container-padding section">
         <div className="mb-12 grid lg:grid-cols-2 lg:gap-5">
           <h2 className="text-2xl lg:text-3xl font-medium leading-tight text-dark sm:text-4xl">
@@ -221,50 +202,12 @@ const BuiltObjectsPage = async () => {
           <h2 className="text-2xl lg:text-3xl font-medium leading-tight text-dark sm:text-4xl">
             Построенный объекты компании
           </h2>
-{/* 
-          <p className=" text-base leading-relaxed text-dark60">
-            Яx сделал страницу не в формате обычной сетки, а в виде крупных
-            карточек. Так каждый объект воспринимается отдельно и выглядит
-            значимее.
-          </p> */}
+
         </div>
 
         <BuiltObjectsMap objects={builtObjects} />
       </section>
 
-      {/* <section className="container-padding section mb-24">
-        <div className="grid overflow-hidden rounded-4xl bg-dark10 p-3 sm:p-4 lg:grid-cols-[1fr_0.8fr]">
-          <div className="grid content-center rounded-4xl bg-accent p-6 text-white sm:p-8 lg:p-10">
-            <h2 className="max-w-3xl text-2xl lg:text-3xl font-medium leading-tight sm:text-4xl">
-              Посмотрите актуальные предложения компании
-            </h2>
-
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base">
-              В каталоге можно выбрать комнатность, площадь, стоимость и
-              оставить заявку на консультацию.
-            </p>
-
-            <div className="mt-7">
-              <Button
-                text="Смотреть квартиры"
-                variant="white"
-                size="md"
-                linkToPage="/apartments"
-              />
-            </div>
-          </div>
-
-          <div className="relative min-h-[260px] overflow-hidden rounded-4xl sm:min-h-[340px] lg:min-h-full">
-            <img
-              src="/built/family-home.jpg"
-              alt="Новая квартира"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-          </div>
-        </div>
-      </section> */}
     </main>
   );
 };

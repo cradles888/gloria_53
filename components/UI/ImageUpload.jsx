@@ -18,7 +18,6 @@ const deleteStorageFile = async (url) => {
   try {
     await fetch(`/api/upload?path=${encodeURIComponent(path)}`, { method: "DELETE" });
   } catch {
-    // best-effort cleanup
   }
 };
 

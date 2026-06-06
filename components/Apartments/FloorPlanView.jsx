@@ -5,7 +5,6 @@ import Link from "next/link";
 const formatPrice = (price) =>
   price ? new Intl.NumberFormat("ru-RU").format(price) : null;
 
-// Стиль ячейки зависит от статуса и попадает ли в фильтр
 const cellStyle = (status, highlighted) => {
   if (status === "available") {
     return highlighted
@@ -100,14 +99,14 @@ const FloorPlanView = ({ apartments = [], filteredIds = new Set() }) => {
                     <div className="overflow-x-auto">
                       <div className="inline-block">
                         {floorNums.map((floor) => {
-                          // Сортировка квартир по номеру (по убыванию — как на старом сайте)
+                          // Сортировка квартир по номеру
                           const floorApts = [...floorMap.get(floor)].sort(
                             (a, b) => Number(b.number) - Number(a.number),
                           );
 
                           return (
                             <div key={floor} className="mb-1 flex items-stretch gap-1">
-                              {/* Номер этажа */}
+                              {/* этаж */}
                               <div className="flex w-6 shrink-0 items-center justify-end pr-1 text-xs font-medium text-dark40">
                                 {floor}
                               </div>
@@ -140,7 +139,6 @@ const FloorPlanView = ({ apartments = [], filteredIds = new Set() }) => {
         </div>
       ))}
 
-      {/* Легенда — один раз внизу */}
       <div className="flex flex-wrap gap-4 text-xs text-dark50">
         <span className="flex items-center gap-1.5">
           <span className="inline-block h-3 w-5 rounded-sm bg-accent" />

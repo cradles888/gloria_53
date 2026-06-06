@@ -206,7 +206,6 @@ const ResidentialComplex = ({
           <div
             className="absolute inset-0 cursor-pointer overflow-hidden rounded-4xl bg-cover bg-center bg-no-repeat [backface-visibility:hidden]"
             style={{
-              // backgroundImage: `url('${imageUrl}')`,
               boxShadow: "inset 0 -20px 20px -10px rgba(0, 0, 0, 0.5)",
             }}
             aria-label={imageAlt}

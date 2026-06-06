@@ -67,7 +67,7 @@ export async function POST(request) {
     }) ?? null;
   };
 
-  // Поиск удобств по названию или slug (через запятую в ячейке)
+
   const amenityByKey = new Map();
   for (const a of amenities) {
     amenityByKey.set(a.name.toLowerCase(), a.id);

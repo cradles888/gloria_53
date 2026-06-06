@@ -137,7 +137,6 @@ const FilterModal = ({
             leaveTo="opacity-0 translate-y-4"
           >
             <DialogPanel className="min-h-screen bg-white sm:min-h-0 sm:rounded-4xl sm:shadow-xl">
-              {/* Header */}
               <div className="sticky top-0 z-10 border-b border-dark10 bg-white/95 px-4 py-4 backdrop-blur sm:rounded-t-4xl sm:px-6">
                 <div className="flex items-center justify-between gap-4">
                   <div>
@@ -159,9 +158,7 @@ const FilterModal = ({
                 </div>
               </div>
 
-              {/* Body */}
               <div className="grid gap-10 px-4 py-6 sm:px-6 lg:grid-cols-[1fr_1fr] xl:grid-cols-[1fr_1fr_1fr]">
-                {/* Column 1 */}
                 <div className="grid content-start gap-8">
                   <FilterGroup title="Комнаты">
                     {ROOM_OPTIONS.map((room) => (
@@ -196,7 +193,6 @@ const FilterModal = ({
                   </FilterGroup>
                 </div>
 
-                {/* Column 2 */}
                 <div className="grid content-start gap-8">
                   <div className="grid gap-4">
                     <h3 className="text-base font-medium text-dark">Позиция</h3>
@@ -281,7 +277,6 @@ const FilterModal = ({
                   </FilterGroup>
                 </div>
 
-                {/* Column 3 */}
                 <div className="grid content-start gap-8">
                   <div className="grid gap-4">
                     <h3 className="text-base font-medium text-dark">Площадь</h3>
@@ -336,7 +331,6 @@ const FilterModal = ({
                 </div>
               </div>
 
-              {/* Footer */}
               <div className="sticky bottom-0 z-10 border-t border-dark10 bg-white/95 px-4 py-4 backdrop-blur sm:rounded-b-4xl sm:px-6">
                 <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
                   <Button

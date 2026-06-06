@@ -24,8 +24,7 @@ export const DEFAULT_FILTERS = {
   buildingId: null,
 };
 
-// Controlled mode: onFiltersChange + filters are passed from parent (ApartmentsCatalog).
-// Standalone mode: no props → manages own state, "Показать" navigates to /apartments.
+
 const Filter = ({
   filters: externalFilters,
   onFiltersChange,

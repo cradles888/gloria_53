@@ -17,7 +17,6 @@ const TouchSlider = ({ children }) => {
   
   const totalSlides = children.length;
   
-  // Определяем количество карточек в зависимости от ширины экрана
   useEffect(() => {
     const updateCardsToShow = () => {
       const width = window.innerWidth;
@@ -39,7 +38,6 @@ const TouchSlider = ({ children }) => {
     return () => window.removeEventListener('resize', updateCardsToShow);
   }, []);
   
-  // Получаем ширину контейнера
   useEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {
@@ -59,7 +57,6 @@ const TouchSlider = ({ children }) => {
   const isAtStart = currentIndex === 0;
   const isAtEnd = currentIndex === maxIndex;
   
-  // Функция для расчета правильного смещения в конце
   const getBaseTranslate = () => {
     if (isAtEnd && maxIndex > 0) {
       return -maxOffset;
@@ -67,7 +64,6 @@ const TouchSlider = ({ children }) => {
     return -currentIndex * cardWidth;
   };
   
-  // Расчет смещения с учетом границ
   const calculateConstrainedOffset = (offset) => {
     const currentTranslate = getBaseTranslate();
     const newTranslate = currentTranslate + offset;
@@ -78,7 +74,6 @@ const TouchSlider = ({ children }) => {
     return offset;
   };
   
-  // Начало касания/клика
   const handleDragStart = (e) => {
     setIsDragging(true);
     const clientX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
@@ -94,7 +89,6 @@ const TouchSlider = ({ children }) => {
     }
   };
   
-  // Движение
   const handleDragMove = (e) => {
     if (!isDragging) return;
     
@@ -104,12 +98,10 @@ const TouchSlider = ({ children }) => {
     const deltaX = Math.abs(clientX - startX.current);
     const deltaY = Math.abs(clientY - startY.current);
     
-    // Определяем направление скролла (горизонтальный или вертикальный)
     if (!isHorizontalScroll.current && (deltaX > 5 || deltaY > 5)) {
       isHorizontalScroll.current = deltaX > deltaY;
     }
     
-    // Если это горизонтальный свайп - предотвращаем скролл страницы
     if (isHorizontalScroll.current) {
       e.preventDefault();
       e.stopPropagation();
@@ -121,13 +113,11 @@ const TouchSlider = ({ children }) => {
     }
   };
   
-  // Завершение
   const handleDragEnd = (e) => {
     if (!isDragging) return;
     
     setIsDragging(false);
     
-    // Если это был горизонтальный свайп - обрабатываем переключение слайда
     if (isHorizontalScroll.current) {
       const threshold = cardWidth * 0.2;
       let newIndex = currentIndex;
@@ -152,14 +142,12 @@ const TouchSlider = ({ children }) => {
     isHorizontalScroll.current = false;
   };
   
-  // Расчет transform
   const getTransform = () => {
     const baseTranslate = getBaseTranslate();
     const translate = baseTranslate + dragOffset;
     return `translateX(${translate}px)`;
   };
-  
-  // Переключение слайдов
+
   const goToPrev = () => {
     if (!isAtStart) {
       setCurrentIndex(currentIndex - 1);
@@ -177,7 +165,6 @@ const TouchSlider = ({ children }) => {
   return (
     <div className={`w-[93vw] width-container padding-last-slide max-w-[1440px] overflow-hidden`}>
       <div className="w-full mx-auto">
-        {/* Контейнер с кнопками над слайдером - только для десктопа */}
         <div className="flex justify-end items-center mb-6">
           <div className="flex gap-3">
             <button
@@ -230,7 +217,6 @@ const TouchSlider = ({ children }) => {
           </div>
         </div>
         
-        {/* Слайдер */}
         <div className="relative rounded-4xl">
           <div 
             ref={containerRef}
@@ -272,7 +258,6 @@ const TouchSlider = ({ children }) => {
           </div>
         </div>
         
-        {/* Индикаторы */}
         {maxIndex > 0 && (
           <div className="flex justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
             {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
@@ -294,7 +279,6 @@ const TouchSlider = ({ children }) => {
           </div>
         )}
         
-        {/* Счетчик */}
         {maxIndex > 0 && (
           <div className="text-center mt-3 sm:mt-4 text-xs sm:text-sm text-gray-500">
             {currentIndex + 1} / {maxIndex + 1}

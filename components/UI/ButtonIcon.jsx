@@ -1,8 +1,8 @@
 const ButtonIcon = ({ 
   icon: Icon,
   onClick,
-  size = "md",        // sm, md, lg
-  variant = "default", // default, primary, outline, ghost
+  size = "md",
+  variant = "default",
   className = "",
   ariaLabel = "button",
   disabled = false,
