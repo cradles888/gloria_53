@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 
 import Filter from "@/components/Filter/page";
 import SortDropdown from "@/components/UI/SortDropdown";
-import ComplexSelector from "@/components/ComplexSelector";
-import MortgageInfoBlock from "@/components/MortgageInfoBlock";
+import ComplexSelector from "@/components/Apartments/ComplexSelector";
+import MortgageInfoBlock from "@/components/Apartments/MortgageInfoBlock";
 import SliderSwitch from "@/components/UI/SliderSwitch";
 import AppartmentCard from "@/components/UI/AppartmentCard";
 import FloorPlanView from "@/components/Apartments/FloorPlanView";

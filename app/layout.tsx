@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Script from 'next/script';
 import Roboto from 'next/font/local';
 import "./globals.css";
-import HeaderWrapper from "@/components/HeaderWrapper";
-import Footer from "@/components/Footer"
+import HeaderWrapper from "@/components/Layout/HeaderWrapper";
+import Footer from "@/components/Layout/Footer"
 
 
 export const metadata: Metadata = {

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import PromoCard from "@/components/PromoCard";
+import PromoCard from "@/components/NewsPromotions/PromoCard";
 import Filter from "@/components/Filter/page";
 import CardComplex from "@/components/UI/CardComplex";
 import NewsModule from "@/components/NewsPromotions/NewsModule/page";
