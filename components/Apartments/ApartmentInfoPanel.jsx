@@ -14,23 +14,6 @@ const formatArea = (value) => {
   return String(value).replace(".", ",");
 };
 
-const PURCHASE_OPTIONS = [
-  {
-    id: "mortgage",
-    title: "Ипотека",
-    description: "Рассчитывается индивидуально",
-  },
-  {
-    id: "full-payment",
-    title: "Полная оплата",
-    description: "Покупка одним платежом",
-  },
-  {
-    id: "installment",
-    title: "Рассрочка на 3 месяца",
-    description: "Условия уточняются у менеджера",
-  },
-];
 
 const InfoRow = ({ label, value }) => {
   if (value === null || value === undefined || value === "") return null;
@@ -74,11 +57,13 @@ const PurchaseOptionCard = ({ option, isActive, onSelect }) => {
     >
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="font-medium text-dark">{option.title}</p>
+          <p className="font-medium text-dark">{option.name}</p>
 
-          <p className="mt-1 text-sm leading-relaxed text-dark/60">
-            {option.description}
-          </p>
+          {option.description ? (
+            <p className="mt-1 text-sm leading-relaxed text-dark/60">
+              {option.description}
+            </p>
+          ) : null}
         </div>
 
         <span
@@ -168,7 +153,7 @@ const RequestModal = ({ isOpen, onClose, apartment, selectedPurchase }) => {
                     <span className="text-dark50">Условие покупки</span>
 
                     <span className="text-right font-medium text-dark">
-                      {selectedPurchase.title}
+                      {selectedPurchase?.name}
                     </span>
                   </div>
                 </div>
@@ -203,7 +188,7 @@ const RequestModal = ({ isOpen, onClose, apartment, selectedPurchase }) => {
                   <textarea
                     name="comment"
                     rows={3}
-                    defaultValue={`Интересует квартира №${apartment.number}. Условие покупки: ${selectedPurchase.title}.`}
+                    defaultValue={`Интересует квартира №${apartment.number}. Условие покупки: ${selectedPurchase?.name ?? ""}.`}
                     className="resize-none rounded-2xl border border-dark/10 bg-white px-4 py-3 text-dark outline-none transition focus:border-accent"
                   />
                 </label>
@@ -212,7 +197,7 @@ const RequestModal = ({ isOpen, onClose, apartment, selectedPurchase }) => {
                 <input
                   type="hidden"
                   name="purchaseOption"
-                  value={selectedPurchase.id}
+                  value={selectedPurchase?.id ?? ""}
                 />
 
                 <div className="mt-3">
@@ -237,8 +222,8 @@ const RequestModal = ({ isOpen, onClose, apartment, selectedPurchase }) => {
   );
 };
 
-const ApartmentInfoPanel = ({ apartment, showSuccess = false }) => {
-  const [selectedPurchase, setSelectedPurchase] = useState(PURCHASE_OPTIONS[0]);
+const ApartmentInfoPanel = ({ apartment, purchaseOptions = [], showSuccess = false }) => {
+  const [selectedPurchase, setSelectedPurchase] = useState(purchaseOptions[0]);
   const [isRequestOpen, setIsRequestOpen] = useState(false);
 
   const {
@@ -326,22 +311,24 @@ const ApartmentInfoPanel = ({ apartment, showSuccess = false }) => {
                 </div>
               ) : null}
 
-              <div className="mt-7 rounded-4xl bg-dark10 p-4 sm:p-5">
-                <p className="mb-4 text-base font-medium text-dark">
-                  Условия покупки
-                </p>
+              {purchaseOptions.length > 0 ? (
+                <div className="mt-7 rounded-4xl bg-dark10 p-4 sm:p-5">
+                  <p className="mb-4 text-base font-medium text-dark">
+                    Условия покупки
+                  </p>
 
-                <div className="grid gap-3">
-                  {PURCHASE_OPTIONS.map((option) => (
-                    <PurchaseOptionCard
-                      key={option.id}
-                      option={option}
-                      isActive={selectedPurchase.id === option.id}
-                      onSelect={setSelectedPurchase}
-                    />
-                  ))}
+                  <div className="grid gap-3">
+                    {purchaseOptions.map((option) => (
+                      <PurchaseOptionCard
+                        key={option.id}
+                        option={option}
+                        isActive={selectedPurchase?.id === option.id}
+                        onSelect={setSelectedPurchase}
+                      />
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : null}
 
               <div className="mt-8 rounded-4xl bg-dark10 p-5">
                 <p className="mb-2 text-base font-medium text-dark">

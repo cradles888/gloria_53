@@ -216,6 +216,17 @@ export default async function ApartmentPage({ params, searchParams }) {
     notFound();
   }
 
+  const purchaseOptions = (
+    await prisma.purchaseOption.findMany({
+      where: { isActive: true },
+      orderBy: { sortOrder: "asc" },
+    })
+  ).map((option) => ({
+    id: option.id,
+    name: option.name,
+    description: option.description || "",
+  }));
+
   const similar = await getSimilarApartments(apartment);
 
   const apartmentTitle = `${apartment.rooms}-комнатная квартира, ${apartment.areaTotal} м²`;
@@ -229,7 +240,11 @@ export default async function ApartmentPage({ params, searchParams }) {
             apartmentTitle={apartmentTitle}
           />
 
-          <ApartmentInfoPanel  apartment={apartment} showSuccess={success === "1"} />
+          <ApartmentInfoPanel
+            apartment={apartment}
+            purchaseOptions={purchaseOptions}
+            showSuccess={success === "1"}
+          />
         </div>
 
         <SimilarApartments items={similar} />

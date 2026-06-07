@@ -43,14 +43,14 @@
 
 ```
 gloria53/
-├── app/                 # маршруты App Router, страницы и Server Actions
-│   ├── apartments/      # каталог и карточка квартиры
-│   ├── g53-manager/     # админ-панель (CRUD, медиатека, импорт)
-│   └── api/             # route handlers (upload, media, import, template)
-├── components/          # React-компоненты (UI, каталог, галерея и много другого)
-├── lib/                 # клиент Supabase, вспомогательные модули
-├── prisma/              # schema.prisma, миграции, seed
-└── public/              # статические ресурсы
+├── app/            
+│   ├── apartments/ 
+│   ├── g53-manager/
+│   └── api/        
+├── components/     
+├── lib/            
+├── prisma/         
+└── public/         
 ```
 
 ---

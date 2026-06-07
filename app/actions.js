@@ -13,6 +13,7 @@ export const submitApplication = async (formData) => {
   const phone = String(formData.get("phone") || "").trim();
   const comment = String(formData.get("comment") || "").trim();
   const apartmentId = Number(formData.get("apartmentId"));
+  const purchaseOptionId = Number(formData.get("purchaseOption"));
 
   if (!name || !phone || !apartmentId) {
     redirect(`/apartments/${apartmentId}?error=required`);
@@ -25,6 +26,10 @@ export const submitApplication = async (formData) => {
       name,
       phone,
       comment: comment || null,
+      purchaseOptionId:
+        Number.isInteger(purchaseOptionId) && purchaseOptionId > 0
+          ? purchaseOptionId
+          : null,
     },
   });
 
