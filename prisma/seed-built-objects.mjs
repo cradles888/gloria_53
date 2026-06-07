@@ -46,6 +46,12 @@ async function main() {
     });
   }
 
+  // Сбрасываем sequence id на max+1: объекты вставлены с явными id (upsert),
+  // иначе следующий create() столкнётся с «Unique constraint failed (id)».
+  await prisma.$executeRawUnsafe(
+    `SELECT setval(pg_get_serial_sequence('"BuiltObject"','id'), COALESCE((SELECT MAX(id) FROM "BuiltObject"), 0) + 1, false)`,
+  );
+
   console.log(`Seeded ${objects.length} built objects.`);
 }
 

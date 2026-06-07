@@ -105,7 +105,7 @@ const RequestModal = ({ isOpen, onClose, apartment, selectedPurchase }) => {
 
   return (
     <Dialog open={isOpen} onClose={onClose} className="relative z-[120]">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+      <div className="fixed inset-0 bg-black/70" />
 
       <div className="fixed inset-0 overflow-y-auto p-3 sm:p-5">
         <div className="flex min-h-full items-end justify-center sm:items-center">
@@ -256,7 +256,6 @@ const ApartmentInfoPanel = ({ apartment, showSuccess = false }) => {
     settlementDate,
     complexName,
     apartmentType,
-    article,
     amenityItems,
     roomAreas,
   } = apartment;

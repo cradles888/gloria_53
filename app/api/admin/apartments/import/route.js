@@ -113,7 +113,6 @@ export async function POST(request) {
     const entrance = parseInteger(row["Подъезд"]);
     const ceilingHeight = parseDecimal(row["Высота потолков"]);
     const layoutType = String(row["Тип"] || "Квартира").trim();
-    const article = String(row["Артикул"] || "").trim() || null;
     const statusRaw = String(row["Статус"] || "").trim().toLowerCase();
     const status = STATUS_MAP[statusRaw] ?? "available";
     const mainImage = String(row["Главное фото"] || "").trim() || null;
@@ -151,7 +150,6 @@ export async function POST(request) {
           entrance,
           ceilingHeight,
           layoutType,
-          article,
           status,
           mainImage,
           planImage,

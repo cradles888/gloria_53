@@ -202,7 +202,6 @@ const apartmentsSeed = [
 
     status: "available",
     layoutType: "Квартира",
-    article: "ГЛ-1-2-70.9-0",
 
     mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
@@ -249,7 +248,6 @@ const apartmentsSeed = [
 
     status: "available",
     layoutType: "Квартира",
-    article: "ГЛ-1-2-45.7-1",
 
     mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
@@ -287,7 +285,6 @@ const apartmentsSeed = [
 
     status: "available",
     layoutType: "Квартира",
-    article: "ГЛ-1-2-45.7-2",
 
     mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
@@ -325,7 +322,6 @@ const apartmentsSeed = [
 
     status: "available",
     layoutType: "Квартира",
-    article: "ГЛ-1-2-45.7-3",
 
     mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
@@ -363,7 +359,6 @@ const apartmentsSeed = [
 
     status: "available",
     layoutType: "Квартира",
-    article: "ГЛ-1-2-45.7-4",
 
     mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
@@ -401,7 +396,6 @@ const apartmentsSeed = [
 
     status: "available",
     layoutType: "Квартира",
-    article: "ГЛ-1-2-45.7-5",
 
     mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
@@ -439,7 +433,6 @@ const apartmentsSeed = [
 
     status: "available",
     layoutType: "Квартира",
-    article: "ГЛ-1-2-45.7-6",
 
     mainImage: "/apartments/2-45.png",
     planImage: "/apartments/general-plan.jpg",
@@ -606,7 +599,6 @@ async function main() {
 
         status: apartment.status,
         layoutType: apartment.layoutType,
-        article: apartment.article,
 
         mainImage: apartment.mainImage,
         planImage: apartment.planImage,

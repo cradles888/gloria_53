@@ -211,7 +211,6 @@ export const updateApartment = async (formData) => {
       ceilingHeight: ceilingHeightRaw || null,
       status: String(formData.get("status") || "available"),
       layoutType: String(formData.get("layoutType") || "Квартира").trim(),
-      article: String(formData.get("article") || "").trim() || null,
       mainImage: mainImage || null,
       planImage: planImage || null,
       amenities: {

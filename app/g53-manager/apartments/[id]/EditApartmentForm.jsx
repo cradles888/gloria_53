@@ -134,11 +134,6 @@ const EditApartmentForm = ({ apartment, buildings, amenities = [], selectedAmeni
             Тип недвижимости
             <input name="layoutType" defaultValue={apartment.layoutType ?? "Квартира"} className={inputCls} />
           </label>
-
-          <label className={labelCls}>
-            Артикул
-            <input name="article" defaultValue={apartment.article ?? ""} placeholder="—" className={inputCls} />
-          </label>
         </div>
       </FormSection>
 

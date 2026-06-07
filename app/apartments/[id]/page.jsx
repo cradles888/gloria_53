@@ -80,7 +80,6 @@ const serializeApartment = (apartment) => {
 
     status: apartment.status,
     apartmentType: apartment.layoutType || "Квартира",
-    article: apartment.article,
 
     mainImage: apartment.mainImage || sortedImages[0]?.url || "",
     planImage: apartment.planImage || "",

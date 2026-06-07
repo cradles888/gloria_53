@@ -37,7 +37,7 @@ const AdminNav = ({ active = "overview", title }) => {
 
       <nav className="mt-8">
         <div className="relative border-b border-dark15">
-          <div>
+          <div className="overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <div className="flex min-w-max">
               {tabs.map((tab) => {
                 const isActive = active === tab.id;

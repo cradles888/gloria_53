@@ -84,7 +84,6 @@ model Apartment {
 
   status        String   @default("available")
   layoutType    String?
-  article       String?
 
   mainImage     String?
   planImage     String?

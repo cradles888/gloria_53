@@ -54,7 +54,6 @@ const serializeApartment = (apartment) => {
 
     buildingId: apartment.buildingId,
     apartmentType: "Квартира",
-    article: apartment.article,
 
     amenityItems: apartment.amenities.map((item) => ({
       id: item.amenity.id,
