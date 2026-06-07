@@ -545,7 +545,7 @@ async function main() {
   await prisma.building.deleteMany();
   await prisma.residentialComplex.deleteMany();
 
-  console.log("Создание жилых комплексов...");
+  console.log("Заполнение таблиц...");
 
   const complexBySlug = new Map<string, number>();
 
@@ -556,8 +556,6 @@ async function main() {
 
     complexBySlug.set(createdComplex.slug, createdComplex.id);
   }
-
-  console.log("Создание домов / позиций...");
 
   const buildingByPosition = new Map<string, number>();
 
@@ -586,8 +584,6 @@ async function main() {
     }
   }
 
-  console.log("Создание удобств...");
-
   const amenityByOldId = new Map<number, number>();
 
   for (const amenity of amenitiesSeed) {
@@ -602,19 +598,13 @@ async function main() {
     amenityByOldId.set(amenity.oldId, createdAmenity.id);
   }
 
-  console.log("Создание условий покупки...");
-
   await prisma.purchaseOption.createMany({
     data: purchaseOptionsSeed,
   });
 
-  console.log("Создание администраторов...");
-
   await prisma.adminUser.createMany({
     data: adminUsersSeed,
   });
-
-  console.log("Создание новостей и акций...");
 
   for (const newsItem of newsItemsSeed) {
     const complexId = newsItem.complexSlug
@@ -644,8 +634,6 @@ async function main() {
     });
   }
 
-  console.log("Создание построенных объектов...");
-
   for (const [index, obj] of builtObjectsSeed.entries()) {
     await prisma.builtObject.create({
       data: {
@@ -666,8 +654,6 @@ async function main() {
   await prisma.$executeRawUnsafe(
     `SELECT setval(pg_get_serial_sequence('"BuiltObject"','id'), COALESCE((SELECT MAX(id) FROM "BuiltObject"), 0) + 1, false)`,
   );
-
-  console.log("Создание квартир...");
 
   for (const apartment of apartmentsSeed) {
     const buildingId = buildingByPosition.get(apartment.buildingPosition);
@@ -729,7 +715,7 @@ async function main() {
     });
   }
 
-  console.log("Seed завершён успешно!");
+  console.log("Заполнение таблиц завершено успешно!");
 }
 
 main()
