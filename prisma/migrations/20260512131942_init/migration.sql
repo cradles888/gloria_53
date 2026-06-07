@@ -1,4 +1,3 @@
--- CreateTable
 CREATE TABLE "ResidentialComplex" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -13,7 +12,6 @@ CREATE TABLE "ResidentialComplex" (
     CONSTRAINT "ResidentialComplex_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
 CREATE TABLE "Building" (
     "id" SERIAL NOT NULL,
     "complexId" INTEGER NOT NULL,
@@ -30,7 +28,7 @@ CREATE TABLE "Building" (
     CONSTRAINT "Building_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "Apartment" (
     "id" SERIAL NOT NULL,
     "buildingId" INTEGER NOT NULL,
@@ -53,7 +51,7 @@ CREATE TABLE "Apartment" (
     CONSTRAINT "Apartment_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "ApartmentImage" (
     "id" SERIAL NOT NULL,
     "apartmentId" INTEGER NOT NULL,
@@ -65,7 +63,7 @@ CREATE TABLE "ApartmentImage" (
     CONSTRAINT "ApartmentImage_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "ApartmentRoomArea" (
     "id" SERIAL NOT NULL,
     "apartmentId" INTEGER NOT NULL,
@@ -76,7 +74,7 @@ CREATE TABLE "ApartmentRoomArea" (
     CONSTRAINT "ApartmentRoomArea_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "Amenity" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -86,7 +84,7 @@ CREATE TABLE "Amenity" (
     CONSTRAINT "Amenity_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "ApartmentAmenity" (
     "apartmentId" INTEGER NOT NULL,
     "amenityId" INTEGER NOT NULL,
@@ -94,7 +92,7 @@ CREATE TABLE "ApartmentAmenity" (
     CONSTRAINT "ApartmentAmenity_pkey" PRIMARY KEY ("apartmentId","amenityId")
 );
 
--- CreateTable
+
 CREATE TABLE "PurchaseOption" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -105,7 +103,7 @@ CREATE TABLE "PurchaseOption" (
     CONSTRAINT "PurchaseOption_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
+
 CREATE TABLE "Application" (
     "id" SERIAL NOT NULL,
     "apartmentId" INTEGER NOT NULL,
@@ -120,32 +118,32 @@ CREATE TABLE "Application" (
     CONSTRAINT "Application_pkey" PRIMARY KEY ("id")
 );
 
--- CreateIndex
+
 CREATE UNIQUE INDEX "ResidentialComplex_slug_key" ON "ResidentialComplex"("slug");
 
--- CreateIndex
+
 CREATE UNIQUE INDEX "Amenity_slug_key" ON "Amenity"("slug");
 
--- AddForeignKey
+
 ALTER TABLE "Building" ADD CONSTRAINT "Building_complexId_fkey" FOREIGN KEY ("complexId") REFERENCES "ResidentialComplex"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "Apartment" ADD CONSTRAINT "Apartment_buildingId_fkey" FOREIGN KEY ("buildingId") REFERENCES "Building"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "ApartmentImage" ADD CONSTRAINT "ApartmentImage_apartmentId_fkey" FOREIGN KEY ("apartmentId") REFERENCES "Apartment"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "ApartmentRoomArea" ADD CONSTRAINT "ApartmentRoomArea_apartmentId_fkey" FOREIGN KEY ("apartmentId") REFERENCES "Apartment"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "ApartmentAmenity" ADD CONSTRAINT "ApartmentAmenity_apartmentId_fkey" FOREIGN KEY ("apartmentId") REFERENCES "Apartment"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "ApartmentAmenity" ADD CONSTRAINT "ApartmentAmenity_amenityId_fkey" FOREIGN KEY ("amenityId") REFERENCES "Amenity"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "Application" ADD CONSTRAINT "Application_apartmentId_fkey" FOREIGN KEY ("apartmentId") REFERENCES "Apartment"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
--- AddForeignKey
+
 ALTER TABLE "Application" ADD CONSTRAINT "Application_purchaseOptionId_fkey" FOREIGN KEY ("purchaseOptionId") REFERENCES "PurchaseOption"("id") ON DELETE SET NULL ON UPDATE CASCADE;

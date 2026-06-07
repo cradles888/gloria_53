@@ -115,6 +115,46 @@ const adminUsersSeed = [
 
 const newsItemsSeed = [
   {
+    complexSlug: null,
+    type: "promotion",
+    label: "IT-ипотека",
+    title: "IT-ипотека для специалистов IT-сферы",
+    excerpt:
+      "Льготная ставка для сотрудников аккредитованных IT-компаний на покупку квартиры.",
+    content: [
+      "IT-ипотека — это программа с пониженной ставкой для сотрудников аккредитованных IT-компаний. Она позволяет приобрести квартиру в наших жилых комплексах на более выгодных условиях, чем по стандартной ипотеке.",
+      "Менеджеры отдела продаж помогут проверить, подходите ли вы под условия программы, рассчитают ежемесячный платёж и подскажут доступные квартиры. Оставьте заявку на сайте — и мы свяжемся с вами для консультации.",
+    ],
+    image:
+      "https://avatars.mds.yandex.net/i?id=604de88757f463456f6d4220e8fdf4bb_l-10992423-images-thumbs&n=13",
+    slug: "it-ipoteka",
+    isFeatured: true,
+    isPublished: true,
+    showOnMain: true,
+    sortOrder: 0,
+    publishedAt: new Date("2026-06-01"),
+  },
+  {
+    complexSlug: null,
+    type: "promotion",
+    label: "Семейная ипотека",
+    title: "Семейная ипотека для семей с детьми",
+    excerpt:
+      "Льготные условия покупки квартиры для семей с детьми по государственной программе.",
+    content: [
+      "Семейная ипотека — это государственная программа с пониженной ставкой для семей с детьми. С ней можно приобрести квартиру в наших жилых комплексах на льготных условиях и снизить ежемесячный платёж.",
+      "Специалисты отдела продаж помогут разобраться в условиях программы, рассчитают платёж и подберут подходящую квартиру. Оставьте заявку — и мы подскажем все детали.",
+    ],
+    image:
+      "https://as2.ftcdn.net/jpg/05/40/61/67/1000_F_540616761_KZdeLnsmmA45jvmfiAdYJcD6OWTRRVsc.jpg",
+    slug: "semeynaya-ipoteka",
+    isFeatured: true,
+    isPublished: true,
+    showOnMain: true,
+    sortOrder: 1,
+    publishedAt: new Date("2026-06-02"),
+  },
+  {
     complexSlug: "zhk-yunnatov",
     type: "promotion",
     label: "Акция",
@@ -564,6 +604,7 @@ async function main() {
         slug: newsItem.slug,
         isFeatured: newsItem.isFeatured,
         isPublished: newsItem.isPublished,
+        showOnMain: newsItem.showOnMain ?? false,
         sortOrder: newsItem.sortOrder,
         publishedAt: newsItem.publishedAt,
       },
