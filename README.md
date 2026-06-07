@@ -68,7 +68,6 @@ npm run dev                              # запуск
 Для теста желательно использовать supabase, чтобы сразу работало supabase storage для медиатеки
 env:
 - DATABASE_URL= (SESSION POOLER connection string)
-- DIRECT_URL=postgresql://postgres.kbjoqqhdizkupsfatkwk:[YOUR_PASSWORD]@aws-0-eu-west-1.pooler.supabase.com:5432/postgres
 - NEXT_PUBLIC_SUPABASE_URL: Settings → Data API (api url)
 - SUPABASE_SERVICE_ROLE_KEY: Settings → API Keys → Leagcy anon, service_role API keys (service_role)
 - ADMIN_SESSION_SECRET: node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
