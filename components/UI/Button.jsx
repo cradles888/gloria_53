@@ -101,7 +101,12 @@ const Button = ({
     }
 
     if (linkToPage) {
-      router.push(linkToPage);
+      // tel:/mailto:/внешние ссылки next-роутер не умеет — открываем напрямую
+      if (/^(tel:|mailto:|https?:)/i.test(linkToPage)) {
+        window.location.href = linkToPage;
+      } else {
+        router.push(linkToPage);
+      }
     }
   };
 

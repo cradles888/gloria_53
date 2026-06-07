@@ -85,22 +85,22 @@ const EditApartmentForm = ({ apartment, buildings, amenities = [], selectedAmeni
 
           <label className={labelCls}>
             Этаж
-            <input name="floor" type="number" min="1" defaultValue={apartment.floor} className={inputCls} required />
+            <input name="floor" type="number" min="1" max="300" defaultValue={apartment.floor} className={inputCls} required />
           </label>
 
           <label className={labelCls}>
             Подъезд
-            <input name="entrance" type="number" min="1" defaultValue={apartment.entrance ?? ""} placeholder="—" className={inputCls} />
+            <input name="entrance" type="number" min="1" max="99" defaultValue={apartment.entrance ?? ""} placeholder="—" className={inputCls} />
           </label>
 
           <label className={labelCls}>
             Площадь, м²
-            <input name="areaTotal" type="number" step="0.01" min="0.01" defaultValue={areaTotal} className={inputCls} required />
+            <input name="areaTotal" type="number" step="0.01" min="0.01" max="999999.99" defaultValue={areaTotal} className={inputCls} required />
           </label>
 
           <label className={`${labelCls} sm:col-span-2 lg:col-span-4 lg:max-w-xs`}>
             Высота потолков, м
-            <input name="ceilingHeight" type="number" step="0.01" min="0" defaultValue={ceilingHeight} placeholder="2.70" className={inputCls} />
+            <input name="ceilingHeight" type="number" step="0.01" min="0" max="99.99" defaultValue={ceilingHeight} placeholder="2.70" className={inputCls} />
           </label>
         </div>
       </FormSection>
@@ -109,12 +109,12 @@ const EditApartmentForm = ({ apartment, buildings, amenities = [], selectedAmeni
         <div className="grid gap-4 sm:grid-cols-3">
           <label className={labelCls}>
             Цена, ₽
-            <input name="price" type="number" min="0" defaultValue={apartment.price} className={inputCls} required />
+            <input name="price" type="number" min="0" max="2147483647" defaultValue={apartment.price} className={inputCls} required />
           </label>
 
           <label className={labelCls}>
             Цена за м², ₽
-            <input name="pricePerSqm" type="number" min="0" defaultValue={apartment.pricePerSqm ?? ""} className={inputCls} />
+            <input name="pricePerSqm" type="number" min="0" max="2147483647" defaultValue={apartment.pricePerSqm ?? ""} className={inputCls} />
           </label>
 
           <label className={labelCls}>

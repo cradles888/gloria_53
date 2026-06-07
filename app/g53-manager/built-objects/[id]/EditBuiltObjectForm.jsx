@@ -71,7 +71,7 @@ const EditBuiltObjectForm = ({ item }) => {
 
           <label className={labelCls}>
             Порядок сортировки
-            <input type="number" name="sortOrder" className={inputCls} defaultValue={item.sortOrder} />
+            <input type="number" name="sortOrder" className={inputCls} defaultValue={item.sortOrder} min="0" max="100000" />
           </label>
         </div>
       </FormSection>
@@ -113,11 +113,11 @@ const EditBuiltObjectForm = ({ item }) => {
         <div className="grid gap-4 lg:grid-cols-2">
           <label className={labelCls}>
             Долгота (lng)
-            <input type="number" name="lng" step="any" className={inputCls} defaultValue={lng ?? ""} placeholder="31.2755" />
+            <input type="number" name="lng" step="any" min="-180" max="180" className={inputCls} defaultValue={lng ?? ""} placeholder="31.2755" />
           </label>
           <label className={labelCls}>
             Широта (lat)
-            <input type="number" name="lat" step="any" className={inputCls} defaultValue={lat ?? ""} placeholder="58.5228" />
+            <input type="number" name="lat" step="any" min="-90" max="90" className={inputCls} defaultValue={lat ?? ""} placeholder="58.5228" />
           </label>
         </div>
       </FormSection>

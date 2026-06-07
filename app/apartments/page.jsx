@@ -73,7 +73,7 @@ const serializeApartment = (apartment) => {
 };
 
 const getApartmentsPageData = async () => {
-  const [apartments, complexes, buildings] = await Promise.all([
+  const [apartments, complexes, buildings, amenities] = await Promise.all([
     prisma.apartment.findMany({
       include: {
         building: {
@@ -112,6 +112,10 @@ const getApartmentsPageData = async () => {
       include: { complex: true },
       orderBy: { id: "asc" },
     }),
+
+    prisma.amenity.findMany({
+      orderBy: { name: "asc" },
+    }),
   ]);
 
   return {
@@ -132,26 +136,43 @@ const getApartmentsPageData = async () => {
       complexName: building.complex.name,
       settlementDate: formatSettlementDate(building.plannedSettlementDate),
     })),
+    amenities: amenities.map((amenity) => ({
+      id: amenity.id,
+      name: amenity.name,
+      slug: amenity.slug,
+      icon: amenity.icon || "",
+    })),
   };
 };
 
+const splitParam = (value) =>
+  value ? String(value).split(",").filter(Boolean) : [];
+
 const parseInitialFilters = (searchParams) => {
-  const rooms = searchParams.rooms
-    ? String(searchParams.rooms).split(",").filter(Boolean)
-    : [];
   const priceFrom = parseFloat(searchParams.priceFrom);
   const priceTo = parseFloat(searchParams.priceTo);
+  const buildingId = searchParams.buildingId
+    ? Number(searchParams.buildingId)
+    : null;
+
   return {
-    rooms,
+    rooms: splitParam(searchParams.rooms),
     priceRange: [
       isNaN(priceFrom) ? 0 : priceFrom,
       isNaN(priceTo) ? 17 : priceTo,
     ],
+    areaFrom: searchParams.areaFrom ? String(searchParams.areaFrom) : "",
+    areaTo: searchParams.areaTo ? String(searchParams.areaTo) : "",
+    floorFrom: searchParams.floorFrom ? String(searchParams.floorFrom) : "",
+    floorTo: searchParams.floorTo ? String(searchParams.floorTo) : "",
+    floorFeatures: splitParam(searchParams.floorFeatures),
+    amenities: splitParam(searchParams.amenities),
+    buildingId: buildingId && !Number.isNaN(buildingId) ? buildingId : null,
   };
 };
 
 export default async function ApartmentsPage({ searchParams }) {
-  const { apartments, complexes, buildings } = await getApartmentsPageData();
+  const { apartments, complexes, buildings, amenities } = await getApartmentsPageData();
   const resolvedParams = await searchParams;
   const initialFilters = parseInitialFilters(resolvedParams);
 
@@ -160,6 +181,7 @@ export default async function ApartmentsPage({ searchParams }) {
       apartments={apartments}
       complexes={complexes}
       buildings={buildings}
+      amenities={amenities}
       initialFilters={initialFilters}
     />
   );

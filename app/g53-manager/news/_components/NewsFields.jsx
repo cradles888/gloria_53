@@ -97,6 +97,8 @@ const NewsFields = ({ item = null }) => {
           <input
             name="sortOrder"
             type="number"
+            min="0"
+            max="100000"
             defaultValue={item?.sortOrder ?? 0}
             className="h-12 rounded-4xl border border-dark15 bg-white px-5 text-base outline-none transition focus:border-accent"
           />

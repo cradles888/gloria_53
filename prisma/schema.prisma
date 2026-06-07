@@ -44,12 +44,28 @@ model Building {
 
   complex               ResidentialComplex @relation(fields: [complexId], references: [id])
   apartments            Apartment[]
+  constructionPhotos    ConstructionPhoto[]
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
   @@index([complexId])
   @@index([complexId, status])
+}
+
+model ConstructionPhoto {
+  id         Int      @id @default(autoincrement())
+  buildingId Int
+  url        String
+  takenAt    DateTime
+  sortOrder  Int      @default(0)
+
+  building   Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
+
+  createdAt  DateTime @default(now())
+
+  @@index([buildingId])
+  @@index([takenAt])
 }
 
 model Apartment {
@@ -145,21 +161,23 @@ model PurchaseOption {
 
 model Application {
   id               Int      @id @default(autoincrement())
-  apartmentId      Int
+  apartmentId      Int?
   purchaseOptionId Int?
 
+  type             String   @default("purchase")
   name             String
   phone            String
   comment          String?
   status           String   @default("new")
 
-  apartment        Apartment @relation(fields: [apartmentId], references: [id])
+  apartment        Apartment? @relation(fields: [apartmentId], references: [id])
   purchaseOption   PurchaseOption? @relation(fields: [purchaseOptionId], references: [id])
 
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
   @@index([status])
+  @@index([type])
   @@index([apartmentId])
 }
 

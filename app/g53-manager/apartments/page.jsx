@@ -7,6 +7,7 @@ import SectionMeter from "../_components/SectionMeter";
 import Link from "next/link";
 import ApartmentImportButton from "./_components/ApartmentImportButton";
 import ApartmentsViewToggle from "./_components/ApartmentsViewToggle";
+import { deleteApartment } from "../actions";
 
 export const metadata = {
   title: "Квартиры",
@@ -91,7 +92,10 @@ export default async function ManagerApartmentsPage({ searchParams }) {
             </div>
           </div>
 
-          <ApartmentsViewToggle apartments={serializedApartments} />
+          <ApartmentsViewToggle
+            apartments={serializedApartments}
+            deleteAction={deleteApartment}
+          />
         </section>
 
         <AdminPagination

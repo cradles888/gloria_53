@@ -1,4 +1,5 @@
 import Button from "@/components/UI/Button";
+import MessageButton from "@/components/UI/MessageButton";
 
 const COMPANY_STATS = [
   {
@@ -88,18 +89,17 @@ const AboutPage = () => {
                 linkToPage="/apartments"
               />
 
-              <Button
+              <MessageButton
                 text="Связаться с отделом продаж"
                 variant="outline"
                 size="md"
-                linkToPage="/contacts"
               />
             </div>
           </div>
 
           <div className="relative min-h-[420px] overflow-hidden bg-transparent sm:min-h-[520px] hidden lg:block">
             <img
-              src="/logo-active.jpg"
+              src="/logo-big.png"
               alt="Строительная компания Глория"
               className="absolute inset-0 h-full w-full object-contain"
             />
@@ -405,7 +405,7 @@ const AboutPage = () => {
               </h3>
 
               <p className="mt-4 text-sm leading-relaxed text-white/70">
-                Руководит строительной компанией «Глория».
+                Руководит строительной компанией ООО «Глория».
               </p>
             </article>
           </div>
@@ -450,7 +450,7 @@ const AboutPage = () => {
                   text="Связаться"
                   variant="glass"
                   size="md"
-                  linkToPage="/contacts"
+                  linkToPage="tel:+78162623800"
                 />
               </div>
             </div>

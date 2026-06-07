@@ -35,6 +35,18 @@ const STATUS_STYLES = {
   cancelled: "bg-dark15 text-dark50",
 };
 
+const TYPE_LABELS = {
+  purchase: "Покупка",
+  consultation: "Консультация",
+  message: "Сообщение",
+};
+
+const TYPE_STYLES = {
+  purchase: "bg-accent/10 text-accent",
+  consultation: "bg-blue-100 text-blue-700",
+  message: "bg-dark10 text-dark",
+};
+
 const formatDate = (date) =>
   new Intl.DateTimeFormat("ru-RU", {
     day: "numeric",
@@ -95,6 +107,7 @@ export default async function ManagerApplicationsPage({ searchParams }) {
                 <tr className="border-b border-dark15 bg-dark10 text-left text-xs uppercase tracking-wide text-dark50">
                   <th className="px-5 py-3 font-medium">#</th>
                   <th className="px-5 py-3 font-medium">Дата</th>
+                  <th className="px-5 py-3 font-medium">Тип</th>
                   <th className="px-5 py-3 font-medium">Имя</th>
                   <th className="px-5 py-3 font-medium">Телефон</th>
                   <th className="px-5 py-3 font-medium">Квартира</th>
@@ -105,7 +118,7 @@ export default async function ManagerApplicationsPage({ searchParams }) {
               <tbody className="divide-y divide-dark15">
                 {applications.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="px-5 py-10 text-center text-dark50">
+                    <td colSpan={8} className="px-5 py-10 text-center text-dark50">
                       Заявок пока нет
                     </td>
                   </tr>
@@ -114,13 +127,20 @@ export default async function ManagerApplicationsPage({ searchParams }) {
                   const apt = app.apartment;
                   const aptLabel = apt
                     ? `№${apt.number}, ${apt.rooms}-комн. · ${apt.building?.complex?.name ?? ""}`
-                    : `ID ${app.apartmentId}`;
+                    : "—";
 
                   return (
                     <tr key={app.id} className="align-top hover:bg-dark10/40">
                       <td className="px-5 py-4 text-dark50">{app.id}</td>
                       <td className="px-5 py-4 whitespace-nowrap text-dark50">
                         {formatDate(app.createdAt)}
+                      </td>
+                      <td className="px-5 py-4">
+                        <span
+                          className={`inline-flex whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium ${TYPE_STYLES[app.type] ?? TYPE_STYLES.message}`}
+                        >
+                          {TYPE_LABELS[app.type] ?? app.type}
+                        </span>
                       </td>
                       <td className="px-5 py-4 font-medium text-dark">{app.name}</td>
                       <td className="px-5 py-4 whitespace-nowrap text-dark">

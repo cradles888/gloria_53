@@ -82,22 +82,22 @@ const NewApartmentForm = ({ buildings, amenities = [] }) => {
 
           <label className={labelCls}>
             Этаж *
-            <input name="floor" type="number" min="1" required defaultValue="1" className={inputCls} />
+            <input name="floor" type="number" min="1" max="300" required defaultValue="1" className={inputCls} />
           </label>
 
           <label className={labelCls}>
             Подъезд
-            <input name="entrance" type="number" min="1" placeholder="—" className={inputCls} />
+            <input name="entrance" type="number" min="1" max="99" placeholder="—" className={inputCls} />
           </label>
 
           <label className={labelCls}>
             Площадь, м² *
-            <input name="areaTotal" type="number" step="0.01" min="0.01" required placeholder="45.70" className={inputCls} />
+            <input name="areaTotal" type="number" step="0.01" min="0.01" max="999999.99" required placeholder="45.70" className={inputCls} />
           </label>
 
           <label className={`${labelCls} sm:col-span-2 lg:col-span-4 lg:max-w-xs`}>
             Высота потолков, м
-            <input name="ceilingHeight" type="number" step="0.01" min="0" placeholder="2.70 (по умолчанию)" className={inputCls} />
+            <input name="ceilingHeight" type="number" step="0.01" min="0" max="99.99" placeholder="2.70 (по умолчанию)" className={inputCls} />
           </label>
         </div>
       </FormSection>
@@ -106,12 +106,12 @@ const NewApartmentForm = ({ buildings, amenities = [] }) => {
         <div className="grid gap-4 sm:grid-cols-3">
           <label className={labelCls}>
             Цена, ₽ *
-            <input name="price" type="number" min="0" required placeholder="7780000" className={inputCls} />
+            <input name="price" type="number" min="0" max="2147483647" required placeholder="7780000" className={inputCls} />
           </label>
 
           <label className={labelCls}>
             Цена за м², ₽ *
-            <input name="pricePerSqm" type="number" min="0" required placeholder="171240" className={inputCls} />
+            <input name="pricePerSqm" type="number" min="0" max="2147483647" required placeholder="171240" className={inputCls} />
           </label>
 
           <label className={labelCls}>

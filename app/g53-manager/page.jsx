@@ -18,11 +18,11 @@ export const dynamic = "force-dynamic";
 
 const LoginView = ({ hasError, hasConfigError }) => {
   return (
-    <main className="min-h-screen bg-dark10 px-4 py-10">
+    <main className="min-h-screen px-4 py-10">
       <section className="mx-auto grid min-h-[calc(100vh-80px)] max-w-md content-center">
         <form
           action={loginAdmin}
-          className="rounded-4xl bg-white p-6 shadow-sm sm:p-8"
+          className="rounded-4xl bg-(--color-background) p-6 shadow-lg sm:p-8"
         >
           <h1 className="text-3xl font-medium text-dark">
             Вход в панель

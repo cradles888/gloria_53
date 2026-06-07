@@ -38,6 +38,7 @@ const EditBuildingForm = ({ building }) => {
             <input
               type="text"
               name="position"
+              maxLength={10}
               className={inputCls}
               defaultValue={building.position ?? ""}
               placeholder="Позиция 1"
@@ -49,6 +50,7 @@ const EditBuildingForm = ({ building }) => {
             <input
               type="text"
               name="name"
+              maxLength={80}
               className={inputCls}
               defaultValue={building.name ?? ""}
               placeholder="Корпус А"
@@ -60,6 +62,7 @@ const EditBuildingForm = ({ building }) => {
             <input
               type="text"
               name="address"
+              maxLength={200}
               className={inputCls}
               defaultValue={building.address ?? ""}
               placeholder="ул. Юннатов, 12"
@@ -87,6 +90,7 @@ const EditBuildingForm = ({ building }) => {
               defaultValue={building.floorsTotal ?? ""}
               placeholder="17"
               min="1"
+              max="300"
             />
           </label>
 
@@ -99,6 +103,7 @@ const EditBuildingForm = ({ building }) => {
               defaultValue={building.entrancesTotal ?? ""}
               placeholder="4"
               min="1"
+              max="99"
             />
           </label>
 

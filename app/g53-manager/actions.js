@@ -10,6 +10,42 @@ import {
   requireAdmin,
 } from "@/lib/adminAuth";
 import { prisma } from "@/lib/prisma";
+import {
+  FIELD_LIMITS,
+  STRING_LIMITS,
+  withinLength,
+  parseBoundedInt,
+  parseBoundedDecimal,
+} from "@/lib/validation";
+
+// Проверяет, что числовые поля квартиры в допустимых пределах БД
+// (Int ≤ 2 147 483 647, площадь Decimal(8,2), высота Decimal(4,2)).
+const apartmentNumbersValid = (formData) =>
+  [
+    parseBoundedInt(formData.get("rooms"), { ...FIELD_LIMITS.rooms, allowEmpty: true }),
+    parseBoundedInt(formData.get("floor"), { ...FIELD_LIMITS.floor, allowEmpty: true }),
+    parseBoundedInt(formData.get("entrance"), { ...FIELD_LIMITS.entrance, allowEmpty: true }),
+    parseBoundedInt(formData.get("price"), { ...FIELD_LIMITS.price, allowEmpty: true }),
+    parseBoundedInt(formData.get("pricePerSqm"), { ...FIELD_LIMITS.pricePerSqm, allowEmpty: true }),
+    parseBoundedDecimal(formData.get("areaTotal"), { ...FIELD_LIMITS.areaTotal, allowEmpty: true }),
+    parseBoundedDecimal(formData.get("ceilingHeight"), { ...FIELD_LIMITS.ceilingHeight, allowEmpty: true }),
+  ].every((c) => c.ok);
+
+const buildingFieldsValid = (formData) =>
+  [
+    parseBoundedInt(formData.get("floorsTotal"), { ...FIELD_LIMITS.floorsTotal, allowEmpty: true }),
+    parseBoundedInt(formData.get("entrancesTotal"), { ...FIELD_LIMITS.entrancesTotal, allowEmpty: true }),
+  ].every((c) => c.ok) &&
+  withinLength(formData.get("position"), STRING_LIMITS.position) &&
+  withinLength(formData.get("name"), STRING_LIMITS.name) &&
+  withinLength(formData.get("address"), STRING_LIMITS.address);
+
+const builtObjectNumbersValid = (formData) =>
+  [
+    parseBoundedInt(formData.get("sortOrder"), { ...FIELD_LIMITS.sortOrder, allowEmpty: true }),
+    parseBoundedDecimal(formData.get("lng"), { ...FIELD_LIMITS.lng, allowEmpty: true }),
+    parseBoundedDecimal(formData.get("lat"), { ...FIELD_LIMITS.lat, allowEmpty: true }),
+  ].every((c) => c.ok);
 
 const parseBoolean = (value) => value === "on" || value === "true";
 
@@ -42,7 +78,10 @@ const getNewsDataFromForm = (formData) => ({
   isFeatured: parseBoolean(formData.get("isFeatured")),
   isPublished: parseBoolean(formData.get("isPublished")),
   showOnMain: parseBoolean(formData.get("showOnMain")),
-  sortOrder: Number(formData.get("sortOrder") || 0),
+  sortOrder: parseBoundedInt(formData.get("sortOrder"), {
+    ...FIELD_LIMITS.sortOrder,
+    allowEmpty: true,
+  }).value ?? 0,
   publishedAt: parseDate(formData.get("publishedAt")),
 });
 
@@ -116,6 +155,7 @@ export const updateNewsItem = async (formData) => {
   revalidatePath("/news");
   revalidatePath(`/news/${data.slug}`);
   revalidatePath("/g53-manager/news");
+  redirect("/g53-manager/news");
 };
 
 export const deleteNewsItem = async (formData) => {
@@ -141,6 +181,10 @@ export const updateApartment = async (formData) => {
 
   const id = Number(formData.get("id"));
   if (!id) redirect("/g53-manager/apartments?error=required");
+
+  if (!apartmentNumbersValid(formData)) {
+    redirect(`/g53-manager/apartments/${id}?error=range`);
+  }
 
   const number = String(formData.get("number") || "").trim();
   const rooms = Number(formData.get("rooms") || 0);
@@ -180,7 +224,7 @@ export const updateApartment = async (formData) => {
   revalidatePath("/apartments");
   revalidatePath(`/apartments/${id}`);
   revalidatePath("/g53-manager/apartments");
-  redirect(`/g53-manager/apartments/${id}`);
+  redirect("/g53-manager/apartments");
 };
 
 export const deleteApartment = async (formData) => {
@@ -201,6 +245,10 @@ export const createBuilding = async (formData) => {
 
   const complexId = Number(formData.get("complexId"));
   if (!complexId) redirect("/g53-manager/buildings/new?error=required");
+
+  if (!buildingFieldsValid(formData)) {
+    redirect("/g53-manager/buildings/new?error=range");
+  }
 
   await prisma.building.create({
     data: {
@@ -245,6 +293,10 @@ export const updateBuilding = async (formData) => {
   const id = Number(formData.get("id"));
   if (!id) redirect("/g53-manager/buildings?error=required");
 
+  if (!buildingFieldsValid(formData)) {
+    redirect(`/g53-manager/buildings/${id}?error=range`);
+  }
+
   await prisma.building.update({
     where: { id },
     data: {
@@ -261,7 +313,7 @@ export const updateBuilding = async (formData) => {
 
   revalidatePath("/apartments");
   revalidatePath("/g53-manager/buildings");
-  redirect(`/g53-manager/buildings/${id}`);
+  redirect("/g53-manager/buildings");
 };
 
 const parseImages = (formData) => {
@@ -282,6 +334,10 @@ const parseCoordinates = (lng, lat) => {
 
 export const createBuiltObject = async (formData) => {
   await requireAdmin();
+
+  if (!builtObjectNumbersValid(formData)) {
+    redirect("/g53-manager/built-objects/new?error=range");
+  }
 
   await prisma.builtObject.create({
     data: {
@@ -306,6 +362,10 @@ export const updateBuiltObject = async (formData) => {
   const id = Number(formData.get("id"));
   if (!id) redirect("/g53-manager/built-objects?error=required");
 
+  if (!builtObjectNumbersValid(formData)) {
+    redirect(`/g53-manager/built-objects/${id}?error=range`);
+  }
+
   await prisma.builtObject.update({
     where: { id },
     data: {
@@ -321,7 +381,7 @@ export const updateBuiltObject = async (formData) => {
 
   revalidatePath("/built-object");
   revalidatePath("/g53-manager/built-objects");
-  redirect(`/g53-manager/built-objects/${id}`);
+  redirect("/g53-manager/built-objects");
 };
 
 export const deleteBuiltObject = async (formData) => {
@@ -379,6 +439,10 @@ export const createApartment = async (formData) => {
     redirect("/g53-manager/apartments/new?error=required");
   }
 
+  if (!apartmentNumbersValid(formData)) {
+    redirect("/g53-manager/apartments/new?error=range");
+  }
+
   const entranceRaw = String(formData.get("entrance") || "").trim();
   const ceilingHeightRaw = String(formData.get("ceilingHeight") || "").trim();
   const amenityIds = parseAmenityIds(formData);
@@ -407,4 +471,43 @@ export const createApartment = async (formData) => {
   revalidatePath("/apartments");
   revalidatePath("/g53-manager/apartments");
   redirect("/g53-manager/apartments");
+};
+
+export const addConstructionPhoto = async (formData) => {
+  await requireAdmin();
+
+  const buildingId = Number(formData.get("buildingId"));
+  const url = String(formData.get("url") || "").trim();
+  const takenAtRaw = String(formData.get("takenAt") || "").trim();
+  const sortOrder = Number(formData.get("sortOrder") || 0);
+
+  if (!buildingId || !url || !takenAtRaw) {
+    redirect(`/g53-manager/buildings/${buildingId}?error=photo-required`);
+  }
+
+  await prisma.constructionPhoto.create({
+    data: {
+      buildingId,
+      url,
+      takenAt: new Date(takenAtRaw),
+      sortOrder,
+    },
+  });
+
+  revalidatePath(`/g53-manager/buildings/${buildingId}`);
+  revalidatePath("/unnatov");
+  redirect(`/g53-manager/buildings/${buildingId}`);
+};
+
+export const deleteConstructionPhoto = async (formData) => {
+  await requireAdmin();
+
+  const id = Number(formData.get("id"));
+  const buildingId = Number(formData.get("buildingId"));
+  if (!id) return;
+
+  await prisma.constructionPhoto.delete({ where: { id } });
+
+  revalidatePath(`/g53-manager/buildings/${buildingId}`);
+  revalidatePath("/unnatov");
 };

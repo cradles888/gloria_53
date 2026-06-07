@@ -18,6 +18,7 @@ export const DEFAULT_FILTERS = {
   floorFrom: "",
   floorTo: "",
   floorFeatures: [],
+  amenities: [],
   buildingId: null,
 };
 
@@ -42,15 +43,47 @@ const applyFilters = (apartments, filters) =>
     if (filters.floorFeatures.includes("Не последний") && apt.floorsTotal && apt.floor >= apt.floorsTotal) return false;
     if (filters.floorFeatures.includes("Последний") && (!apt.floorsTotal || apt.floor !== apt.floorsTotal)) return false;
 
+    if (filters.amenities?.length > 0) {
+      const aptSlugs = new Set((apt.amenityItems || []).map((a) => a.slug));
+      if (!filters.amenities.every((slug) => aptSlugs.has(slug))) return false;
+    }
+
     return true;
   });
 
-const ApartmentsCatalog = ({ apartments = [], complexes = [], buildings = [], initialFilters = {} }) => {
-  const [selectedComplex, setSelectedComplex] = useState(
-    complexes[0]?.name || "ЖК Юннатов",
-  );
+const sortApartments = (list, sort) => {
+  if (!sort) return list;
+
+  const sorted = [...list];
+  switch (sort) {
+    case "price-asc":
+      sorted.sort((a, b) => a.price - b.price);
+      break;
+    case "price-desc":
+      sorted.sort((a, b) => b.price - a.price);
+      break;
+    case "area-asc":
+      sorted.sort((a, b) => parseFloat(a.areaTotal) - parseFloat(b.areaTotal));
+      break;
+    case "area-desc":
+      sorted.sort((a, b) => parseFloat(b.areaTotal) - parseFloat(a.areaTotal));
+      break;
+  }
+  return sorted;
+};
+
+const ApartmentsCatalog = ({ apartments = [], complexes = [], buildings = [], amenities = [], initialFilters = {} }) => {
+  // Если в URL пришла позиция (buildingId) — выбираем её ЖК, иначе первый
+  const initialComplexName =
+    (initialFilters.buildingId != null &&
+      buildings.find((b) => b.id === initialFilters.buildingId)?.complexName) ||
+    complexes[0]?.name ||
+    "ЖК Юннатов";
+
+  const [selectedComplex, setSelectedComplex] = useState(initialComplexName);
   const [filters, setFilters] = useState({ ...DEFAULT_FILTERS, ...initialFilters });
   const [view, setView] = useState("grid");
+  const [sort, setSort] = useState(null);
 
   const updateFilter = (key, value) =>
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -73,8 +106,12 @@ const ApartmentsCatalog = ({ apartments = [], complexes = [], buildings = [], in
   };
 
   const filteredApartments = useMemo(
-    () => applyFilters(complexFiltered, filters),
-    [complexFiltered, filters],
+    () =>
+      sortApartments(
+        applyFilters(complexFiltered, filters),
+        view === "floor" ? null : sort,
+      ),
+    [complexFiltered, filters, sort, view],
   );
 
   const filteredIds = useMemo(
@@ -102,6 +139,7 @@ const ApartmentsCatalog = ({ apartments = [], complexes = [], buildings = [], in
           onReset={resetFilters}
           matchingCount={filteredApartments.length}
           buildings={complexBuildings}
+          amenities={amenities}
         />
 
         <div className="mt-6 flex items-center justify-between gap-4">
@@ -109,6 +147,8 @@ const ApartmentsCatalog = ({ apartments = [], complexes = [], buildings = [], in
             text="Сортировать"
             iconLink="/chevron-arrow.svg"
             iconAlt="next-to-page"
+            onChange={setSort}
+            disabled={view === "floor"}
           />
           <SliderSwitch view={view} setView={setView} />
         </div>

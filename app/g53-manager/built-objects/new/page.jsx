@@ -10,8 +10,10 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function NewBuiltObjectPage() {
+export default async function NewBuiltObjectPage({ searchParams }) {
   await requireAdmin();
+
+  const { error } = await searchParams;
 
   return (
     <main className="container-padding">
@@ -24,6 +26,13 @@ export default async function NewBuiltObjectPage() {
             Назад к списку
           </Button>
         </div>
+
+        {error === "range" && (
+          <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+            Проверьте числовые поля: порядок сортировки — до 100 000, долгота
+            −180…180, широта −90…90.
+          </p>
+        )}
 
         <NewBuiltObjectForm />
       </section>

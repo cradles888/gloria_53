@@ -1,6 +1,13 @@
-import Button from '@/components/UI/Button'
+"use client";
+
+import { useState } from "react";
+
+import Button from "@/components/UI/Button";
+import RequestModal from "@/components/UI/RequestModal";
 
 const MortgageInfoBannerMini = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <section className="my-6">
       <div className="relative overflow-hidden rounded-4xl">
@@ -28,12 +35,24 @@ const MortgageInfoBannerMini = () => {
               text="Узнать условия"
               size="sm"
               variant="white"
+              onClick={() => setIsOpen(true)}
             />
           </div>
         </div>
       </div>
-    </section>
-  )
-}
 
-export default MortgageInfoBannerMini
+      <RequestModal
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        badge="Консультация по ипотеке"
+        title="Оставить заявку на консультацию"
+        subtitle="Специалист рассчитает ипотеку индивидуально и подберёт удобные условия покупки."
+        defaultType="consultation"
+        submitText="Получить консультацию"
+        presetComment="Интересует консультация по ипотеке."
+      />
+    </section>
+  );
+};
+
+export default MortgageInfoBannerMini;

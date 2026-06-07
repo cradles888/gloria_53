@@ -3,7 +3,6 @@ import InfoBlock from "@/components/Unnatov/InfoBlock";
 import { formatText, formatTextWithBreaks } from "@/utils/text-format";
 import SliderFullScreen from "@/components/Swiper/SwiperFast";
 import FreemodeSlider from "@/components/Swiper/SwiperFreemode";
-import NewsCTA from "@/components/NewsPromotions/NewsCTA";
 
 export const metadata = {
   title: "ЖК Юннатов — квартиры в Великом Новгороде",
@@ -68,18 +67,21 @@ export default async function Unnatov() {
 
   const complexId = complex?.id;
 
-  const [buildings, availableCount, constructionNews] = await Promise.all([
+  const [buildings, availableCount, constructionPhotos] = await Promise.all([
     complexId
       ? prisma.building.findMany({ where: { complexId, status: "active" }, orderBy: { id: "asc" } })
       : Promise.resolve([]),
     complexId
       ? prisma.apartment.count({ where: { status: "available", building: { complexId } } })
       : Promise.resolve(0),
-    prisma.newsItem.findMany({
-      where: { type: "construction", isPublished: true },
-      orderBy: { publishedAt: "desc" },
-      take: 10,
-    }),
+    complexId
+      ? prisma.constructionPhoto.findMany({
+          where: { building: { complexId } },
+          include: { building: true },
+          orderBy: [{ takenAt: "desc" }, { sortOrder: "asc" }],
+          take: 24,
+        })
+      : Promise.resolve([]),
   ]);
 
   const maxFloors = buildings.reduce((acc: number, b: any) => Math.max(acc, b.floorsTotal ?? 0), 0);
@@ -92,16 +94,21 @@ export default async function Unnatov() {
     { value: formatSettlementDate(earliestDate) || "Уточняйте", label: "срок сдачи" },
   ];
 
-  const newsWithImages = constructionNews.filter((n: any) => n.image);
-  const constructionCards = newsWithImages.length > 0
-    ? newsWithImages.map((n: any) => ({
-        title: n.title,
-        desc: n.publishedAt
-          ? new Date(n.publishedAt).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" })
-          : "",
-        imageUrl: n.image,
-        imageAlt: n.title,
-      }))
+  const constructionCards = constructionPhotos.length > 0
+    ? constructionPhotos.map((photo: any) => {
+        const position = photo.building?.position || photo.building?.name || "";
+        const title = position ? `Позиция №${position}` : "Ход строительства";
+        return {
+          title,
+          desc: new Date(photo.takenAt).toLocaleDateString("ru-RU", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }),
+          imageUrl: photo.url,
+          imageAlt: `${title}, ${new Date(photo.takenAt).toLocaleDateString("ru-RU")}`,
+        };
+      })
     : STATIC_HISTORY;
 
   return (
@@ -176,10 +183,6 @@ export default async function Unnatov() {
           </h3>
           <FreemodeSlider data={constructionCards} />
         </div>
-      </div>
-
-      <div className="container-padding mx-auto mb-20">
-        <NewsCTA />
       </div>
     </div>
   );

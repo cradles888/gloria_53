@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import * as XLSX from "xlsx";
 import { requireAdmin } from "@/lib/adminAuth";
 import { prisma } from "@/lib/prisma";
+import { FIELD_LIMITS } from "@/lib/validation";
 
 const STATUS_MAP = {
   "в продаже": "available",
@@ -118,6 +119,24 @@ export async function POST(request) {
     const mainImage = String(row["Главное фото"] || "").trim() || null;
     const planImage = String(row["План этажа"] || "").trim() || null;
     const amenityIds = parseAmenityIds(row["Удобства"]);
+
+    const overLimit =
+      rooms > FIELD_LIMITS.rooms.max ||
+      floor > FIELD_LIMITS.floor.max ||
+      price > FIELD_LIMITS.price.max ||
+      areaTotal > FIELD_LIMITS.areaTotal.max ||
+      (pricePerSqm !== null && pricePerSqm > FIELD_LIMITS.pricePerSqm.max) ||
+      (entrance !== null && entrance > FIELD_LIMITS.entrance.max) ||
+      (ceilingHeight !== null && ceilingHeight > FIELD_LIMITS.ceilingHeight.max);
+
+    if (overLimit) {
+      skipped.push({
+        row: rowNum,
+        reason:
+          "Числовое значение превышает допустимый предел (цена до 2 147 483 647, площадь до 999 999,99)",
+      });
+      continue;
+    }
 
     try {
       const apartment = await prisma.apartment.create({

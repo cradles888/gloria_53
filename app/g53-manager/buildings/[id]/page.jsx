@@ -6,6 +6,7 @@ import AdminNav from "../../_components/AdminNav";
 import Button from "@/components/UI/Button";
 import EditBuildingForm from "./EditBuildingForm";
 import DeleteBuildingButton from "./DeleteBuildingButton";
+import ConstructionPhotos from "./ConstructionPhotos";
 
 export const metadata = {
   title: "Редактировать дом",
@@ -22,10 +23,19 @@ export default async function EditBuildingPage({ params, searchParams }) {
 
   const building = await prisma.building.findUnique({
     where: { id: Number(id) },
-    include: { complex: true },
+    include: {
+      complex: true,
+      constructionPhotos: { orderBy: [{ takenAt: "desc" }, { id: "desc" }] },
+    },
   });
 
   if (!building) notFound();
+
+  const photos = building.constructionPhotos.map((p) => ({
+    id: p.id,
+    url: p.url,
+    takenAt: p.takenAt.toISOString(),
+  }));
 
   const apartmentCount = await prisma.apartment.count({
     where: { buildingId: building.id },
@@ -54,7 +64,16 @@ export default async function EditBuildingPage({ params, searchParams }) {
           </p>
         )}
 
+        {error === "range" && (
+          <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+            Проверьте значения: этажей — до 300, подъездов — до 99, позиция — до
+            10 символов, название — до 80, адрес — до 200.
+          </p>
+        )}
+
         <EditBuildingForm building={building} />
+
+        <ConstructionPhotos buildingId={building.id} photos={photos} />
 
         <div className="mt-8 border-t border-dark15 pt-8">
           {apartmentCount > 0 ? (

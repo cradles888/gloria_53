@@ -2,8 +2,10 @@ import { prisma } from "@/lib/prisma";
 import { requireAdmin } from "@/lib/adminAuth";
 import Button from "@/components/UI/Button";
 import AdminNav from "../_components/AdminNav";
+import AdminRow from "../_components/AdminRow";
 import AdminPagination from "../_components/AdminPagination";
 import SectionMeter from "../_components/SectionMeter";
+import { deleteBuiltObject } from "../actions";
 
 export const metadata = {
   title: "Построенные объекты",
@@ -59,9 +61,14 @@ export default async function ManagerBuiltObjectsPage({ searchParams }) {
 
           <div className="divide-y divide-dark15">
             {items.map((item) => (
-              <div
+              <AdminRow
                 key={item.id}
-                className="grid items-center gap-4 p-5 sm:grid-cols-[88px_1fr_auto] sm:p-6"
+                openHref={`/g53-manager/built-objects/${item.id}`}
+                editHref={`/g53-manager/built-objects/${item.id}`}
+                deleteAction={deleteBuiltObject}
+                deleteId={item.id}
+                deleteName={item.title}
+                className="grid items-center gap-4 sm:grid-cols-[88px_1fr_auto]"
               >
                 <div className="h-16 overflow-hidden rounded-2xl bg-dark10">
                   {item.images?.[0] ? (
@@ -80,20 +87,17 @@ export default async function ManagerBuiltObjectsPage({ searchParams }) {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3 sm:justify-end">
-                  <span className="rounded-full bg-dark10 px-3 py-1 text-sm text-dark80">
-                    {item.year}
-                  </span>
-
-                  <Button
-                    text="Редактировать"
-                    variant="outline"
-                    size="sm"
-                    linkToPage={`/g53-manager/built-objects/${item.id}`}
-                  />
-                </div>
-              </div>
+                <span className="w-max rounded-full bg-dark10 px-3 py-1 text-sm text-dark80">
+                  {item.year}
+                </span>
+              </AdminRow>
             ))}
+
+            {items.length === 0 && (
+              <p className="p-8 text-center text-sm text-dark50">
+                Объектов пока нет
+              </p>
+            )}
           </div>
         </section>
 

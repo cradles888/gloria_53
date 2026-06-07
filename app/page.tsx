@@ -12,8 +12,41 @@ const getMainPromoCards = async () => {
   });
 };
 
+const formatSettlementDate = (date: Date | null): string => {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  if (month <= 3) return `1 квартал ${year}`;
+  if (month <= 6) return `2 квартал ${year}`;
+  if (month <= 9) return `3 квартал ${year}`;
+  return `4 квартал ${year}`;
+};
+
+const getFilterBuildings = async () => {
+  const buildings = await prisma.building.findMany({
+    where: { status: "active" },
+    include: { complex: true },
+    orderBy: { id: "asc" },
+  });
+
+  return buildings.map((b) => ({
+    id: b.id,
+    position: b.position || "",
+    name: b.name || "",
+    address: b.address || "",
+    floorsTotal: b.floorsTotal,
+    heroImage: b.heroImage || "",
+    complexId: b.complexId,
+    complexName: b.complex.name,
+    settlementDate: formatSettlementDate(b.plannedSettlementDate),
+  }));
+};
+
 export default async function Home() {
-  const promoCards = await getMainPromoCards();
+  const [promoCards, filterBuildings] = await Promise.all([
+    getMainPromoCards(),
+    getFilterBuildings(),
+  ]);
 
   return (
     <main className="min-h-screen">
@@ -40,7 +73,8 @@ export default async function Home() {
         </h1>
 
         <div className="mt-8">
-          <Filter />
+          {/* Filter — JS-компонент; приведение типов на границе JS/TS */}
+          <Filter buildings={filterBuildings as unknown as never[]} />
         </div>
       </section>
 
@@ -55,15 +89,6 @@ export default async function Home() {
             imageUrl="/main-card-complex-unnatov.png"
             imageAlt="Жилой комплекс Юннатов"
             linkToPage="/unnatov"
-          />
-
-          <CardComplex
-            name="ЖК Раздолье"
-            street="ул. Кочетова"
-            price="от 5,4 млн ₽"
-            imageUrl="/main-card-compex-razdolje.png"
-            imageAlt="Жилой комплекс Раздолье"
-            linkToPage="/razdolie"
           />
         </div>
       </section>

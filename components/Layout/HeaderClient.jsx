@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { Fragment, useState } from 'react'
+import { usePathname } from 'next/navigation'
+import { Fragment, useEffect, useState } from 'react'
+import { X } from 'lucide-react'
 import { Dialog, Transition, TransitionChild, DialogPanel, DialogTitle } from '@headlessui/react'
 
 const NAV_LINKS = [
@@ -38,6 +40,13 @@ const HeaderClient = ({
   isAdminAuthenticated = false,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  // Закрываем меню при любой смене маршрута — иначе Dialog может оставить
+  // соседний контент (футер и т.п.) в состоянии inert и сломать клики.
+  useEffect(() => {
+    setIsMenuOpen(false)
+  }, [pathname])
 
   const isWhiteLogo = variant === 'white'
 
@@ -119,14 +128,25 @@ const HeaderClient = ({
           <button
             type="button"
             onClick={() => setIsMenuOpen(true)}
-            className="relative z-30 flex h-14 w-14 flex-col items-center justify-center gap-1.5 rounded-4xl bg-white p-2 transition active:scale-95"
+            className={`relative z-30 flex h-14 w-14 flex-col items-center justify-center gap-1.5 rounded-4xl bg-white p-2 transition active:scale-95 ${
+              isMenuOpen ? 'pointer-events-none opacity-0' : ''
+            }`}
             aria-label="Открыть меню"
             aria-expanded={isMenuOpen}
+            aria-hidden={isMenuOpen}
           >
             <span className="block h-0.5 w-6 bg-header" />
             <span className="block h-0.5 w-6 bg-header" />
             <span className="block h-0.5 w-6 bg-header" />
           </button>
+          <button
+                  type="button"
+                  onClick={closeMenu}
+                  className={`${isMenuOpen ? 'flex' : 'hidden'} right-6 top-6 z-40 h-14 w-14 items-center justify-center rounded-4xl bg-white text-header transition active:scale-95`}
+                  aria-label="Закрыть меню"
+                >
+                  <X className="h-6 w-6" />
+                </button>
         </div>
 
         <Transition show={isMenuOpen} as={Fragment}>
@@ -156,6 +176,8 @@ const HeaderClient = ({
                 <DialogTitle className="sr-only">
                   Меню сайта
                 </DialogTitle>
+
+                
 
                 <nav className="mb-8 flex flex-col gap-2 text-white" aria-label="Мобильная навигация">
                   {NAV_LINKS.map((link) => (

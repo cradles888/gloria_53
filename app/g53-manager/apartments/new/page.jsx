@@ -42,6 +42,13 @@ export default async function NewApartmentPage({ searchParams }) {
           </p>
         )}
 
+        {error === "range" && (
+          <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+            Числовое значение превышает допустимый предел: цена и цена за м² — до
+            2 147 483 647 ₽, площадь — до 999 999,99 м².
+          </p>
+        )}
+
         <NewApartmentForm buildings={buildings} amenities={amenities} />
       </section>
     </main>

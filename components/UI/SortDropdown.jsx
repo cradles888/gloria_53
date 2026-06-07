@@ -3,7 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronRight } from "@/icons/ChevronRight";
 import { CheckMark } from "@/icons/CheckMark";
 
-const buttonIcon = ({ text, iconLink, iconAlt, isOpen = false }) => {
+const SORT_KEYS = ["price-asc", "price-desc", "area-desc", "area-asc"];
+
+const buttonIcon = ({ text, iconLink, iconAlt, isOpen = false, onChange, disabled = false }) => {
   const [isOpenList, setIsOpenList] = useState(false);
   const [isPressedParam, setIsPressedParam] = useState(null);
   const [paramSort, setParamSort] = useState([
@@ -27,12 +29,21 @@ const buttonIcon = ({ text, iconLink, iconAlt, isOpen = false }) => {
   }, []);
 
   const openDropdownList = () => {
+    if (disabled) return;
     setIsOpenList(!isOpenList);
   };
 
+  // В неактивном режиме список всегда закрыт
+  useEffect(() => {
+    if (disabled) setIsOpenList(false);
+  }, [disabled]);
+
   const statusParam = (indexParam) => {
-    setIsPressedParam(isPressedParam === indexParam ? null : indexParam);
-    if (isPressedParam === indexParam) {
+    const next = isPressedParam === indexParam ? null : indexParam;
+    setIsPressedParam(next);
+    onChange?.(next === null ? null : SORT_KEYS[next]);
+
+    if (next === null) {
       return;
     }
 
@@ -43,13 +54,16 @@ const buttonIcon = ({ text, iconLink, iconAlt, isOpen = false }) => {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={openDropdownList}
+        disabled={disabled}
+        title={disabled ? "Сортировка недоступна в поэтажном режиме" : undefined}
         className={`
           flex h-12 min-w-auto sm:min-w-[220px] items-center
           justify-between gap-4 rounded-4xl
           border border-dark40 bg-white
           px-5 text-dark transition
-          hover:border-accent hover:text-accent
-          active:scale-[0.99]
+          ${disabled
+            ? "cursor-not-allowed opacity-50"
+            : "hover:border-accent hover:text-accent active:scale-[0.99]"}
         `}
       >
         {isPressedParam !== null ? paramSort[isPressedParam] : text}

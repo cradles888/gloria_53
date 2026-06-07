@@ -1,7 +1,36 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import Button from '@/components/UI/Button'
+import RequestModal from '@/components/UI/RequestModal'
+
+// Внутренние ссылки (начинаются с "/") — через next/link (клиентская навигация,
+// без полной перезагрузки и сброса состояния футера). Внешние и tel: — обычный <a>.
+const FooterLink = ({ link, className }) => {
+  if (link.static) {
+    return <span className={className.replace(/hover:[^\s]+/g, '')}>{link.label}</span>
+  }
+
+  if (link.href.startsWith('/')) {
+    return (
+      <Link href={link.href} className={className}>
+        {link.label}
+      </Link>
+    )
+  }
+
+  return (
+    <a
+      href={link.href}
+      className={className}
+      target={link.href.startsWith('http') ? '_blank' : undefined}
+      rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
+    >
+      {link.label}
+    </a>
+  )
+}
 
 const FOOTER_SECTIONS = [
   {
@@ -9,10 +38,9 @@ const FOOTER_SECTIONS = [
     title: 'Квартиры',
     links: [
       { label: 'Новостройки', href: '/apartments' },
-      { label: 'Студии', href: '/apartments' },
-      { label: '1-комнатные', href: '/apartments' },
-      { label: '2-комнатные', href: '/apartments' },
-      { label: '3-комнатные', href: '/apartments' },
+      { label: '1-комнатные', href: '/apartments?rooms=1' },
+      { label: '2-комнатные', href: '/apartments?rooms=2' },
+      { label: '3-комнатные', href: '/apartments?rooms=3' },
       { label: 'Квартиры со скидкой', href: '/apartments' },
     ],
   },
@@ -31,7 +59,7 @@ const FOOTER_SECTIONS = [
     links: [
       { label: 'Отдел продаж: +7 (8162) 62-38-00', href: 'tel:+78162623800' },
       { label: 'Адрес: Менделеева, 16', href: 'https://yandex.ru/maps/-/CPRsqWy-' },
-      { label: 'Режим работы: пн–пт, 8:00–17:00', href: '#' },
+      { label: 'Режим работы: пн–пт, 8:00–17:00', static: true },
     ],
   },
   {
@@ -39,11 +67,11 @@ const FOOTER_SECTIONS = [
     title: 'Проекты',
     links: [
       { label: 'ЖК Юннатов', href: '/unnatov' },
-      { label: 'ЖК Раздолье', href: '#' },
-      { label: 'ЖК Шелонская', href: '#' },
-      { label: 'ул. Речная, д. 10', href: '#' },
-      { label: 'Б. Санкт-Петербургская, д. 98', href: '#' },
-      { label: 'Больше проектов', href: '#' },
+      { label: 'ЖК Раздолье', href: '/built-object' },
+      { label: 'ЖК Шелонская', href: '/built-object' },
+      { label: 'ул. Речная, д. 10', href: '/built-object' },
+      { label: 'Б. Санкт-Петербургская, д. 98', href: '/built-object' },
+      { label: 'Больше проектов', href: '/built-object' },
     ],
   },
 ]
@@ -51,13 +79,8 @@ const FOOTER_SECTIONS = [
 const SOCIAL_LINKS = [
   {
     label: 'ВКонтакте',
-    href: '#',
+    href: 'https://vk.com/ngloriya',
     icon: '/vk.svg',
-  },
-  {
-    label: 'Telegram',
-    href: '#',
-    icon: '/tg.svg',
   },
 ]
 
@@ -70,15 +93,11 @@ const FooterColumn = ({ title, links }) => {
 
       <nav className="grid gap-2" aria-label={title}>
         {links.map((link) => (
-          <a
+          <FooterLink
             key={link.label}
-            href={link.href}
+            link={link}
             className="text-sm leading-relaxed text-twopart transition hover:text-white"
-            target={link.href.startsWith('http') ? '_blank' : undefined}
-            rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
-          >
-            {link.label}
-          </a>
+          />
         ))}
       </nav>
     </div>
@@ -126,15 +145,11 @@ const FooterAccordion = ({
         <div className="min-h-0">
           <nav className="grid gap-2" aria-label={section.title}>
             {section.links.map((link) => (
-              <a
+              <FooterLink
                 key={link.label}
-                href={link.href}
+                link={link}
                 className="block py-1 text-sm leading-relaxed text-twopart transition hover:text-white"
-                target={link.href.startsWith('http') ? '_blank' : undefined}
-                rel={link.href.startsWith('http') ? 'noreferrer' : undefined}
-              >
-                {link.label}
-              </a>
+              />
             ))}
           </nav>
         </div>
@@ -143,7 +158,7 @@ const FooterAccordion = ({
   )
 }
 
-const FooterContacts = () => {
+const FooterContacts = ({ onMessageClick }) => {
   return (
     <div className="grid gap-4">
       <div className="grid gap-2">
@@ -162,6 +177,7 @@ const FooterContacts = () => {
           text="Сообщение"
           size="sm"
           variant="accent"
+          onClick={onMessageClick}
         />
 
         <Button
@@ -220,6 +236,7 @@ const FooterLegal = () => {
 
 const Footer = () => {
   const [openSections, setOpenSections] = useState({})
+  const [isMessageOpen, setIsMessageOpen] = useState(false)
 
   const toggleSection = (sectionId) => {
     setOpenSections((prev) => ({
@@ -227,6 +244,8 @@ const Footer = () => {
       [sectionId]: !prev[sectionId],
     }))
   }
+
+  const openMessage = () => setIsMessageOpen(true)
 
   return (
     <div className="container-padding my-8">
@@ -241,7 +260,7 @@ const Footer = () => {
                 className="h-auto w-fit"
               />
 
-              <FooterContacts />
+              <FooterContacts onMessageClick={openMessage} />
             </div>
 
             <FooterLegal />
@@ -273,7 +292,7 @@ const Footer = () => {
                 className="mb-8 h-auto w-fit"
               />
 
-              <FooterContacts />
+              <FooterContacts onMessageClick={openMessage} />
             </div>
 
             <div>
@@ -293,6 +312,17 @@ const Footer = () => {
           </div>
         </div>
       </footer>
+
+      <RequestModal
+        open={isMessageOpen}
+        onClose={() => setIsMessageOpen(false)}
+        badge="Обратная связь"
+        title="Оставить сообщение"
+        subtitle="Напишите нам — менеджер свяжется с вами по указанному телефону."
+        defaultType="message"
+        allowTypeSelect
+        submitText="Отправить сообщение"
+      />
     </div>
   )
 }

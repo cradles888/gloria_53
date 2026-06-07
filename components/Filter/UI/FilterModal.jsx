@@ -15,17 +15,6 @@ import BuildingPickerModal from "@/components/Filter/UI/BuildingPickerModal";
 
 const ROOM_OPTIONS = ["1", "2", "3"];
 
-const STATUS_OPTIONS = ["Свободные", "Забронированные", "Проданные"];
-
-const PURCHASE_OPTIONS = [
-  "Семейная ипотека",
-  "Базовая ипотека",
-  "Рассрочка",
-  "Вторичное жильё в зачёт",
-];
-
-const FINISHING_OPTIONS = ["Без отделки", "Отделка под ключ"];
-
 const FLOOR_OPTIONS = ["Не первый", "Не последний", "Последний"];
 
 const FilterGroup = ({ title, children }) => (
@@ -53,23 +42,17 @@ const FilterChip = ({ text, isActive, onClick }) => (
 const FilterModal = ({
   isOpen,
   onClose,
+  onApply,
   filters,
   onFiltersChange,
   onReset,
   matchingCount = null,
   buildings = [],
+  amenities = [],
 }) => {
-  const [selectedStatuses, setSelectedStatuses] = useState(["Свободные"]);
-  const [selectedPurchaseOptions, setSelectedPurchaseOptions] = useState([]);
-  const [selectedFinishing, setSelectedFinishing] = useState([]);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
 
   const selectedBuilding = buildings.find((b) => b.id === filters.buildingId);
-
-  const toggleUI = (value, setter) =>
-    setter((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
-    );
 
   const toggleRoom = (room) => {
     const next = filters.rooms.includes(room)
@@ -85,10 +68,15 @@ const FilterModal = ({
     onFiltersChange("floorFeatures", next);
   };
 
+  const toggleAmenity = (slug) => {
+    const current = filters.amenities || [];
+    const next = current.includes(slug)
+      ? current.filter((s) => s !== slug)
+      : [...current, slug];
+    onFiltersChange("amenities", next);
+  };
+
   const handleReset = () => {
-    setSelectedStatuses(["Свободные"]);
-    setSelectedPurchaseOptions([]);
-    setSelectedFinishing([]);
     onReset?.();
   };
 
@@ -98,11 +86,10 @@ const FilterModal = ({
   const activeFiltersCount =
     filters.rooms.length +
     filters.floorFeatures.length +
+    (filters.amenities?.length || 0) +
     (hasAreaFilter ? 1 : 0) +
     (hasFloorFilter ? 1 : 0) +
-    (filters.buildingId !== null && filters.buildingId !== undefined ? 1 : 0) +
-    selectedPurchaseOptions.length +
-    selectedFinishing.length;
+    (filters.buildingId !== null && filters.buildingId !== undefined ? 1 : 0);
 
   const buttonLabel =
     matchingCount !== null
@@ -181,16 +168,6 @@ const FilterModal = ({
                     />
                   </div>
 
-                  <FilterGroup title="Статус квартиры">
-                    {STATUS_OPTIONS.map((status) => (
-                      <FilterChip
-                        key={status}
-                        text={status}
-                        isActive={selectedStatuses.includes(status)}
-                        onClick={() => toggleUI(status, setSelectedStatuses)}
-                      />
-                    ))}
-                  </FilterGroup>
                 </div>
 
                 <div className="grid content-start gap-8">
@@ -254,26 +231,21 @@ const FilterModal = ({
                     onSelect={(id) => onFiltersChange("buildingId", id)}
                   />
 
-                  <FilterGroup title="Условия покупки">
-                    {PURCHASE_OPTIONS.map((option) => (
-                      <FilterChip
-                        key={option}
-                        text={option}
-                        isActive={selectedPurchaseOptions.includes(option)}
-                        onClick={() => toggleUI(option, setSelectedPurchaseOptions)}
-                      />
-                    ))}
-                  </FilterGroup>
-
-                  <FilterGroup title="Отделка">
-                    {FINISHING_OPTIONS.map((option) => (
-                      <FilterChip
-                        key={option}
-                        text={option}
-                        isActive={selectedFinishing.includes(option)}
-                        onClick={() => toggleUI(option, setSelectedFinishing)}
-                      />
-                    ))}
+                  <FilterGroup title="Удобства">
+                    {amenities.length === 0 ? (
+                      <span className="text-sm text-dark40">
+                        Нет доступных удобств
+                      </span>
+                    ) : (
+                      amenities.map((amenity) => (
+                        <FilterChip
+                          key={amenity.slug}
+                          text={amenity.name}
+                          isActive={(filters.amenities || []).includes(amenity.slug)}
+                          onClick={() => toggleAmenity(amenity.slug)}
+                        />
+                      ))
+                    )}
                   </FilterGroup>
                 </div>
 
@@ -338,7 +310,7 @@ const FilterModal = ({
                     variant="accent"
                     size="md"
                     fullWidth
-                    onClick={onClose}
+                    onClick={onApply || onClose}
                   />
                   <Button
                     text="Сбросить"

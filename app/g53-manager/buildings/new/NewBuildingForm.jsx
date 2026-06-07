@@ -39,17 +39,17 @@ const NewBuildingForm = ({ complexes }) => {
 
           <label className={labelCls}>
             Позиция (номер / обозначение)
-            <input type="text" name="position" className={inputCls} placeholder="1" />
+            <input type="text" name="position" maxLength={10} className={inputCls} placeholder="1" />
           </label>
 
           <label className={labelCls}>
             Название
-            <input type="text" name="name" className={inputCls} placeholder="Корпус А" />
+            <input type="text" name="name" maxLength={80} className={inputCls} placeholder="Корпус А" />
           </label>
 
           <label className={labelCls}>
             Адрес
-            <input type="text" name="address" className={inputCls} placeholder="ул. Юннатов, 12" />
+            <input type="text" name="address" maxLength={200} className={inputCls} placeholder="ул. Юннатов, 12" />
           </label>
 
           <label className={labelCls}>
@@ -66,12 +66,12 @@ const NewBuildingForm = ({ complexes }) => {
         <div className="grid gap-4 lg:grid-cols-3">
           <label className={labelCls}>
             Этажей всего
-            <input type="number" name="floorsTotal" className={inputCls} placeholder="17" min="1" />
+            <input type="number" name="floorsTotal" className={inputCls} placeholder="17" min="1" max="300" />
           </label>
 
           <label className={labelCls}>
             Подъездов
-            <input type="number" name="entrancesTotal" className={inputCls} placeholder="4" min="1" />
+            <input type="number" name="entrancesTotal" className={inputCls} placeholder="4" min="1" max="99" />
           </label>
 
           <label className={labelCls}>

@@ -38,6 +38,13 @@ export default async function NewBuildingPage({ searchParams }) {
           </p>
         )}
 
+        {error === "range" && (
+          <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+            Проверьте значения: этажей — до 300, подъездов — до 99, позиция — до
+            10 символов, название — до 80, адрес — до 200.
+          </p>
+        )}
+
         <NewBuildingForm complexes={complexes} />
       </section>
     </main>

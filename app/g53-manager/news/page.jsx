@@ -2,8 +2,10 @@ import { prisma } from "@/lib/prisma";
 import Button from "@/components/UI/Button";
 import { requireAdmin } from "@/lib/adminAuth";
 import AdminNav from "../_components/AdminNav";
+import AdminRow from "../_components/AdminRow";
 import AdminPagination from "../_components/AdminPagination";
 import SectionMeter from "../_components/SectionMeter";
+import { deleteNewsItem } from "../actions";
 
 export const metadata = {
   title: "Новости и акции",
@@ -84,37 +86,43 @@ export default async function ManagerNewsPage({ searchParams }) {
 
           <div className="divide-y divide-dark15">
             {newsItems.map((item) => (
-              <div
+              <AdminRow
                 key={item.id}
-                className="grid gap-4 p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-6"
+                openHref={
+                  item.isPublished && item.slug
+                    ? `/news/${item.slug}`
+                    : `/g53-manager/news/${item.id}`
+                }
+                editHref={`/g53-manager/news/${item.id}`}
+                deleteAction={deleteNewsItem}
+                deleteId={item.id}
+                deleteName={item.title}
               >
-                <div>
-                  <p className="text-base font-medium text-dark">
-                    {item.title}
-                  </p>
-                  <div className="mt-1.5 flex flex-wrap items-center gap-3 text-sm text-dark50">
-                    <span>{formatDate(item.publishedAt)}</span>
-                    <span className="rounded-full bg-dark10 px-2.5 py-0.5 text-xs font-medium text-dark80">
-                      {typeLabels[item.type] || item.type}
+                <p className="text-base font-medium text-dark">{item.title}</p>
+                <div className="mt-1.5 flex flex-wrap items-center gap-3 text-sm text-dark50">
+                  <span>{formatDate(item.publishedAt)}</span>
+                  <span className="rounded-full bg-dark10 px-2.5 py-0.5 text-xs font-medium text-dark80">
+                    {typeLabels[item.type] || item.type}
+                  </span>
+                  {!item.isPublished && (
+                    <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
+                      Скрыто
                     </span>
-                    {!item.isPublished && (
-                      <span className="rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
-                        Скрыто
-                      </span>
-                    )}
-                    {item.showOnMain && (
-                      <span className="rounded-full bg-dark px-2.5 py-0.5 text-xs font-medium text-white">
-                        На главной
-                      </span>
-                    )}
-                  </div>
+                  )}
+                  {item.showOnMain && (
+                    <span className="rounded-full bg-dark px-2.5 py-0.5 text-xs font-medium text-white">
+                      На главной
+                    </span>
+                  )}
                 </div>
-
-                <Button variant="ghost" size="sm" linkToPage={`/g53-manager/news/${item.id}`}>
-                  Редактировать
-                </Button>
-              </div>
+              </AdminRow>
             ))}
+
+            {newsItems.length === 0 && (
+              <p className="p-8 text-center text-sm text-dark50">
+                Материалов пока нет
+              </p>
+            )}
           </div>
         </section>
 

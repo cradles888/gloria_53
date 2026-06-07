@@ -33,7 +33,7 @@ const ApartmentHeroGallery = ({ images = [], apartmentTitle = "" }) => {
     return (
         <>
             <div className="relative grid min-h-[420px] min-w-0 overflow-hidden rounded-4xl bg-white p-4 sm:p-8 lg:min-h-full">
-                <div className="absolute inset-x-8 top-1/2 h-32 -translate-y-1/2 rounded-full bg-accent/5 blur-3xl" />
+                
 
                 <div className="apartment-hero-gallery relative z-10 grid min-h-[360px] min-w-0 grid-rows-[auto_1fr] overflow-hidden">
                     <div className="relative z-20 mb-3 flex items-center justify-between gap-3">

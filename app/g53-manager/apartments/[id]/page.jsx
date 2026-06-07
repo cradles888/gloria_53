@@ -14,10 +14,11 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function EditApartmentPage({ params }) {
+export default async function EditApartmentPage({ params, searchParams }) {
   await requireAdmin();
 
   const { id } = await params;
+  const { error } = await searchParams;
   const apartment = await prisma.apartment.findUnique({
     where: { id: Number(id) },
     include: {
@@ -60,6 +61,13 @@ export default async function EditApartmentPage({ params }) {
             Назад к списку
           </Button>
         </div>
+
+        {error === "range" && (
+          <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+            Числовое значение превышает допустимый предел: цена и цена за м² — до
+            2 147 483 647 ₽, площадь — до 999 999,99 м².
+          </p>
+        )}
 
         <EditApartmentForm
           apartment={serialized}

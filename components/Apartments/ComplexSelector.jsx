@@ -21,9 +21,7 @@ const ComplexSelector = ({ selectedComplex, onSelect, options }) => {
   }, [isOpenList]);
 
   const listComplex = [
-    { name: "ЖК Юннатов" },
-    { name: "ЖК Раздолье" },
-    { name: "ЖК Шелонская" },
+    { name: "ЖK Юннатов" },
   ];
 
   const handleComplexSelect = (index) => {

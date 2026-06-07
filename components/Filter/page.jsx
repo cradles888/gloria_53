@@ -21,6 +21,7 @@ export const DEFAULT_FILTERS = {
   floorFrom: "",
   floorTo: "",
   floorFeatures: [],
+  amenities: [],
   buildingId: null,
 };
 
@@ -31,6 +32,7 @@ const Filter = ({
   onReset,
   matchingCount = null,
   buildings = [],
+  amenities = [],
 } = {}) => {
   const router = useRouter();
   const isControlled = Boolean(onFiltersChange);
@@ -64,9 +66,31 @@ const Filter = ({
     updateFilter("rooms", next);
   };
 
+  // Собирает выбранные параметры фильтра в query-строку каталога
+  const buildCatalogQuery = (f) => {
+    const params = new URLSearchParams();
+
+    if (f.rooms?.length) params.set("rooms", f.rooms.join(","));
+
+    const [priceFrom, priceTo] = f.priceRange || [0, 17];
+    if (priceFrom !== 0) params.set("priceFrom", String(priceFrom));
+    if (priceTo !== 17) params.set("priceTo", String(priceTo));
+
+    if (f.areaFrom) params.set("areaFrom", String(f.areaFrom));
+    if (f.areaTo) params.set("areaTo", String(f.areaTo));
+    if (f.floorFrom) params.set("floorFrom", String(f.floorFrom));
+    if (f.floorTo) params.set("floorTo", String(f.floorTo));
+    if (f.floorFeatures?.length) params.set("floorFeatures", f.floorFeatures.join(","));
+    if (f.amenities?.length) params.set("amenities", f.amenities.join(","));
+    if (f.buildingId != null) params.set("buildingId", String(f.buildingId));
+
+    return params.toString();
+  };
+
   const handleShowClick = () => {
     if (!isControlled) {
-      router.push("/apartments");
+      const query = buildCatalogQuery(filters);
+      router.push(query ? `/apartments?${query}` : "/apartments");
     }
   };
 
@@ -176,11 +200,13 @@ const Filter = ({
       <FilterModal
         isOpen={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)}
+        onApply={isControlled ? undefined : handleShowClick}
         filters={filters}
         onFiltersChange={updateFilter}
         onReset={handleReset}
         matchingCount={matchingCount}
         buildings={buildings}
+        amenities={amenities}
       />
 
       <BuildingPickerModal
