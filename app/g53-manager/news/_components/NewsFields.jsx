@@ -43,6 +43,7 @@ const NewsFields = ({ item = null }) => {
           name="excerpt"
           defaultValue={item?.excerpt || ""}
           rows={2}
+          required={!item}
           className="rounded-3xl border border-dark15 bg-white px-5 py-4 text-base outline-none transition focus:border-accent"
         />
       </label>
@@ -53,6 +54,7 @@ const NewsFields = ({ item = null }) => {
           name="content"
           defaultValue={item?.content?.join("\n\n") || ""}
           rows={4}
+          required={!item}
           className="rounded-3xl border border-dark15 bg-white px-5 py-4 text-base outline-none transition focus:border-accent"
         />
       </label>
@@ -88,6 +90,7 @@ const NewsFields = ({ item = null }) => {
             name="publishedAt"
             type="date"
             defaultValue={formatInputDate(item?.publishedAt)}
+            required={!item}
             className="h-12 rounded-4xl border border-dark15 bg-white px-5 text-base outline-none transition focus:border-accent"
           />
         </label>

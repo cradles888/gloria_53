@@ -67,21 +67,13 @@ export default async function Unnatov() {
 
   const complexId = complex?.id;
 
-  const [buildings, availableCount, constructionPhotos] = await Promise.all([
+  const [buildings, availableCount] = await Promise.all([
     complexId
       ? prisma.building.findMany({ where: { complexId, status: "active" }, orderBy: { id: "asc" } })
       : Promise.resolve([]),
     complexId
       ? prisma.apartment.count({ where: { status: "available", building: { complexId } } })
       : Promise.resolve(0),
-    complexId
-      ? prisma.constructionPhoto.findMany({
-          where: { building: { complexId } },
-          include: { building: true },
-          orderBy: [{ takenAt: "desc" }, { sortOrder: "asc" }],
-          take: 24,
-        })
-      : Promise.resolve([]),
   ]);
 
   const maxFloors = buildings.reduce((acc: number, b: any) => Math.max(acc, b.floorsTotal ?? 0), 0);
@@ -94,22 +86,7 @@ export default async function Unnatov() {
     { value: formatSettlementDate(earliestDate) || "Уточняйте", label: "срок сдачи" },
   ];
 
-  const constructionCards = constructionPhotos.length > 0
-    ? constructionPhotos.map((photo: any) => {
-        const position = photo.building?.position || photo.building?.name || "";
-        const title = position ? `Позиция №${position}` : "Ход строительства";
-        return {
-          title,
-          desc: new Date(photo.takenAt).toLocaleDateString("ru-RU", {
-            day: "numeric",
-            month: "long",
-            year: "numeric",
-          }),
-          imageUrl: photo.url,
-          imageAlt: `${title}, ${new Date(photo.takenAt).toLocaleDateString("ru-RU")}`,
-        };
-      })
-    : STATIC_HISTORY;
+  const constructionCards = STATIC_HISTORY;
 
   return (
     <div>

@@ -38,8 +38,8 @@ const NewBuildingForm = ({ complexes }) => {
           </label>
 
           <label className={labelCls}>
-            Позиция (номер / обозначение)
-            <input type="text" name="position" maxLength={10} className={inputCls} placeholder="1" />
+            Позиция (номер / обозначение) *
+            <input type="text" name="position" maxLength={10} required className={inputCls} placeholder="1" />
           </label>
 
           <label className={labelCls}>
@@ -48,8 +48,8 @@ const NewBuildingForm = ({ complexes }) => {
           </label>
 
           <label className={labelCls}>
-            Адрес
-            <input type="text" name="address" maxLength={200} className={inputCls} placeholder="ул. Юннатов, 12" />
+            Адрес *
+            <input type="text" name="address" maxLength={200} required className={inputCls} placeholder="ул. Юннатов, 12" />
           </label>
 
           <label className={labelCls}>
@@ -65,18 +65,18 @@ const NewBuildingForm = ({ complexes }) => {
       <FormSection title="Параметры">
         <div className="grid gap-4 lg:grid-cols-3">
           <label className={labelCls}>
-            Этажей всего
-            <input type="number" name="floorsTotal" className={inputCls} placeholder="17" min="1" max="300" />
+            Этажей всего *
+            <input type="number" name="floorsTotal" required className={inputCls} placeholder="17" min="1" max="300" />
           </label>
 
           <label className={labelCls}>
-            Подъездов
-            <input type="number" name="entrancesTotal" className={inputCls} placeholder="4" min="1" max="99" />
+            Подъездов *
+            <input type="number" name="entrancesTotal" required className={inputCls} placeholder="4" min="1" max="99" />
           </label>
 
           <label className={labelCls}>
-            Плановая дата сдачи
-            <input type="date" name="plannedSettlementDate" className={inputCls} />
+            Плановая дата сдачи *
+            <input type="date" name="plannedSettlementDate" required className={inputCls} />
           </label>
         </div>
       </FormSection>

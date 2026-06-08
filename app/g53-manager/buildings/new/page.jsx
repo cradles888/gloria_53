@@ -33,8 +33,9 @@ export default async function NewBuildingPage({ searchParams }) {
         </div>
 
         {error === "required" && (
-          <p className="mt-6 rounded-3xl bg-accent/10 px-5 py-3 text-sm text-accent">
-            Выберите ЖК.
+          <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+            Заполните обязательные поля: ЖК, позиция, адрес, этажей всего,
+            подъездов и плановая дата сдачи.
           </p>
         )}
 

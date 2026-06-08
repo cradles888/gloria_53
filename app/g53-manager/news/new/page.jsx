@@ -11,8 +11,10 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function ManagerNewsNewPage() {
+export default async function ManagerNewsNewPage({ searchParams }) {
   await requireAdmin();
+
+  const { error } = await searchParams;
 
   return (
     <main className="container-padding">
@@ -31,6 +33,13 @@ export default async function ManagerNewsNewPage() {
               Назад к списку
             </Button>
           </div>
+
+          {error === "required" && (
+            <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+              Заполните все обязательные поля (кроме «Метка» и «Порядок»):
+              заголовок, slug, описание, текст, изображение и дату.
+            </p>
+          )}
 
           <form action={createNewsItem} className="mt-6">
             <NewsFields />

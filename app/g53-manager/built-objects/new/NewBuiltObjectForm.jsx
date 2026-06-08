@@ -54,17 +54,18 @@ const NewBuiltObjectForm = () => {
           </label>
 
           <label className={`${labelCls} lg:col-span-2`}>
-            Описание
+            Описание *
             <textarea
               name="description"
               rows={3}
+              required
               className="rounded-3xl border border-dark15 bg-white px-5 py-3 text-base outline-none transition focus:border-accent"
             />
           </label>
 
           <label className={labelCls}>
-            ЖК (необязательно)
-            <input type="text" name="complex" className={inputCls} placeholder="ЖК Раздолье" />
+            ЖК *
+            <input type="text" name="complex" className={inputCls} required placeholder="ЖК Раздолье" />
           </label>
 
           <label className={labelCls}>
@@ -110,12 +111,12 @@ const NewBuiltObjectForm = () => {
       <FormSection title="Координаты на карте">
         <div className="grid gap-4 lg:grid-cols-2">
           <label className={labelCls}>
-            Долгота (lng)
-            <input type="number" name="lng" step="any" min="-180" max="180" className={inputCls} placeholder="31.2755" />
+            Долгота (lng) *
+            <input type="number" name="lng" step="any" min="-180" max="180" required className={inputCls} placeholder="31.2755" />
           </label>
           <label className={labelCls}>
-            Широта (lat)
-            <input type="number" name="lat" step="any" min="-90" max="90" className={inputCls} placeholder="58.5228" />
+            Широта (lat) *
+            <input type="number" name="lat" step="any" min="-90" max="90" required className={inputCls} placeholder="58.5228" />
           </label>
         </div>
       </FormSection>

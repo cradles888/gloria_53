@@ -27,6 +27,13 @@ export default async function NewBuiltObjectPage({ searchParams }) {
           </Button>
         </div>
 
+        {error === "required" && (
+          <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
+            Заполните все поля (кроме «Порядок сортировки»): адрес/название, год,
+            описание, ЖК, координаты и хотя бы одно фото.
+          </p>
+        )}
+
         {error === "range" && (
           <p className="mt-6 rounded-3xl bg-red-50 px-5 py-3 text-sm text-red-600">
             Проверьте числовые поля: порядок сортировки — до 100 000, долгота

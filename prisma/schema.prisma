@@ -43,28 +43,12 @@ model Building {
 
   complex               ResidentialComplex @relation(fields: [complexId], references: [id])
   apartments            Apartment[]
-  constructionPhotos    ConstructionPhoto[]
 
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
   @@index([complexId])
   @@index([complexId, status])
-}
-
-model ConstructionPhoto {
-  id         Int      @id @default(autoincrement())
-  buildingId Int
-  url        String
-  takenAt    DateTime
-  sortOrder  Int      @default(0)
-
-  building   Building @relation(fields: [buildingId], references: [id], onDelete: Cascade)
-
-  createdAt  DateTime @default(now())
-
-  @@index([buildingId])
-  @@index([takenAt])
 }
 
 model Apartment {

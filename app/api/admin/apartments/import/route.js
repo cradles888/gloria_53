@@ -50,10 +50,17 @@ export async function POST(request) {
     return NextResponse.json({ error: "Таблица пустая" }, { status: 400 });
   }
 
-  const [buildings, amenities] = await Promise.all([
+  const [buildings, amenities, existingApartments] = await Promise.all([
     prisma.building.findMany({ include: { complex: true } }),
     prisma.amenity.findMany(),
+    prisma.apartment.findMany({ select: { buildingId: true, number: true } }),
   ]);
+
+  // Ключи уже существующих квартир «домId:номер» — чтобы не создавать дубликаты
+  // (и относительно базы, и внутри самого загружаемого файла).
+  const existingKeys = new Set(
+    existingApartments.map((a) => `${a.buildingId}:${String(a.number).trim()}`),
+  );
 
   const findBuilding = (position, complexName) => {
     if (!position) return null;
@@ -109,6 +116,15 @@ export async function POST(request) {
       continue;
     }
 
+    const dedupeKey = `${building.id}:${number}`;
+    if (existingKeys.has(dedupeKey)) {
+      skipped.push({
+        row: rowNum,
+        reason: `Квартира №${number} в этом доме уже есть — пропущена (дубликат)`,
+      });
+      continue;
+    }
+
     const pricePerSqm = parseInteger(row["Цена за м2"]);
     const entrance = parseInteger(row["Подъезд"]);
     const ceilingHeight = parseDecimal(row["Высота потолков"]);
@@ -159,6 +175,7 @@ export async function POST(request) {
         },
       });
       created.push({ row: rowNum, number: apartment.number, id: apartment.id });
+      existingKeys.add(dedupeKey); // защита от дублей внутри одного файла
     } catch (err) {
       skipped.push({ row: rowNum, reason: `Ошибка создания: ${err.message}` });
     }
